@@ -1,8 +1,6 @@
 .gradle
 /build/
 
-
-
 ### STS ###
 .apt_generated
 .classpath
@@ -10,7 +8,6 @@
 .project
 .settings
 .springBeans
-
 
 ### IntelliJ IDEA ###
 .idea
@@ -20,12 +17,6 @@
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-
-
-### Travis ###
-!.travis.yml
-
-
 
 # Cache of project
 .gradletasknamecache
