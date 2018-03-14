@@ -1,6 +1,12 @@
 .gradle
 /build/
 
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+### Travis ###
+!.travis.yml
+
 ### STS ###
 .apt_generated
 .classpath
@@ -9,14 +15,15 @@
 .settings
 .springBeans
 
+
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
 
-### Travis ###
-!.travis.yml
+
 
 # Cache of project
 .gradletasknamecache
@@ -24,8 +31,6 @@
 # Ignore Gradle GUI config
 gradle-app.setting
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
 
 
 
