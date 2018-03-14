@@ -15,6 +15,9 @@
 *.iml
 *.ipr
 
+### Travis ###
+!.travis.yml
+
 # Cache of project
 .gradletasknamecache
 
