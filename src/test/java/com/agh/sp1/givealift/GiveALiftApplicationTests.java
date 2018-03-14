@@ -9,11 +9,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class GivealiftApplicationTests {
+public class GiveALiftApplicationTests {
 
 	@Test
-	public void contextLoads() {
+	public void travisTest01() {
 		assertThat(true).isEqualTo(true);//test test...
 	}
+
+    @Test
+    public void travisTest02() {
+        assertThat(true).isEqualTo(false);//test test...
+    }
 
 }
