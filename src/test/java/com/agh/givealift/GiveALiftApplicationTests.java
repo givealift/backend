@@ -1,4 +1,4 @@
-package com.agh.sp1.givealift;
+package com.agh.givealift;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

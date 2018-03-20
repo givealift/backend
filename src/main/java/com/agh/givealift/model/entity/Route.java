@@ -1,13 +1,16 @@
-package com.agh.sp1.givealift.model.entity;
+package com.agh.givealift.model.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class TestEntity {
+public class Route {
     private long id;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }

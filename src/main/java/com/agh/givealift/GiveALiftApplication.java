@@ -1,12 +1,11 @@
-package com.agh.sp1.givealift;
+package com.agh.givealift;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class GiveALiftApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(GiveALiftApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GiveALiftApplication.class, args);
+    }
 }
