@@ -6,19 +6,19 @@ import javax.persistence.*;
 
 @Entity
 public class City {
-    private long cityId;
+    private Long cityId;
     private String name;
-    private Country country;
-    private Province province;
+    private String country;
+    private String province;
     private CityInfo cityInfo;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getCityId() {
+    public Long getCityId() {
         return cityId;
     }
 
-    public void setCityId(long cityId) {
+    public void setCityId(Long cityId) {
         this.cityId = cityId;
     }
 
@@ -32,31 +32,27 @@ public class City {
 
     @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    @NonNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    public Province getProvince() {
-        return province;
-    }
-
-    public void setProvince(Province province) {
-        this.province = province;
-    }
-
-    @NonNull
-    @ManyToOne(cascade = CascadeType.ALL)
     public CityInfo getCityInfo() {
         return cityInfo;
     }
 
     public void setCityInfo(CityInfo cityInfo) {
         this.cityInfo = cityInfo;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

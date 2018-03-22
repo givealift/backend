@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,16 +19,16 @@ public class RouteController {
     @Autowired
     RouteService routeService;
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public ResponseEntity<List<Route>> getAll() {
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity<List<Route>> list() {
         return new ResponseEntity<>(routeService.getAll(), HttpStatus.OK);
     }
 
-    //TODO delete
-    @RequestMapping(value = "/gen", method = RequestMethod.GET)
-    public ResponseEntity<?> gen() {
-        routeService.generate();
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<List<Route>> add(@RequestBody Route route) {
+        routeService.add(route);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 }

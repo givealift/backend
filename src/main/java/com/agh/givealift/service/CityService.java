@@ -20,27 +20,28 @@ public class CityService {
     }
 
     public void saveAll(List<City> cities) {
-        cities.forEach(this::save);
+        for (City c : cities) {
+            cityRepository.save(c);
+            System.out.println("saved City: " + c.getName());
+        }
     }
 
-    public void save(City city) {
-        System.out.println(city.getName() +
-                " co: " + city.getCountry().getName() +
-                " p: " + city.getProvince().getName() +
-                " ci: " + city.getCityInfo().getPopulation() +
-                " | " + city.getCityInfo().getCitySize());
-//        Optional<City> oldCityCountry = cityRepository.findByCountryName(city.getCountry().getName()).stream().findAny();
-//        System.out.println(oldCityCountry.isPresent());
-//        oldCityCountry.ifPresent(c -> city.setCountry(c.getCountry()));
-        System.out.println("a 1");
-//        Optional<City> oldCityProvince = cityRepository.findByProvinceName(city.getProvince().getName()).stream().findAny();
-//        oldCityProvince.forEach(System.out::println);
-//        System.out.println(oldCityProvince.isPresent());
-//        oldCityProvince.ifPresent(c -> city.setProvince(c.getProvince()));
-        System.out.println("a 2");
-        cityRepository.save(city);
-        System.out.println("saved");
-    }
 
+    public City getOrCreate(City city) {
+        if (city.getCityId() != null) {
+            System.out.println(city.getCityId() + " n: " +
+                    city.getName() + " c " +
+                    city.getCountry() + " p " +
+                    city.getProvince() + " ci: " +
+                    city.getCityInfo());
+            city = cityRepository.findById(city.getCityId()).orElse(city);
+            System.out.println(city.getCityId() + " n: " +
+                    city.getName() + " c " +
+                    city.getCountry() + " p " +
+                    city.getProvince() + " ci: " +
+                    city.getCityInfo());
+        }
+        return city;
+    }
 
 }
