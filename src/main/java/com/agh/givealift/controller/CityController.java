@@ -30,4 +30,10 @@ public class CityController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/generate", method = RequestMethod.GET)
+    public ResponseEntity<?> generate() {
+        cityService.generate();
+        return new ResponseEntity<>(cityService.list(),HttpStatus.OK);
+    }
+
 }
