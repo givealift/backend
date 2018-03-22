@@ -7,33 +7,33 @@ import javax.persistence.Id;
 
 @Entity
 public class CityInfo {
-    private long cityInfoId;
-    private long population;
-    private long citySize;
+    private Long cityInfoId;
+    private Long population;
+    private Long citySize;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getCityInfoId() {
+    public Long getCityInfoId() {
         return cityInfoId;
     }
 
-    public void setCityInfoId(long cityInfoId) {
+    public void setCityInfoId(Long cityInfoId) {
         this.cityInfoId = cityInfoId;
     }
 
-    public long getPopulation() {
+    public Long getPopulation() {
         return population;
     }
 
-    public void setPopulation(long population) {
+    public void setPopulation(Long population) {
         this.population = population;
     }
 
-    public long getCitySize() {
+    public Long getCitySize() {
         return citySize;
     }
 
-    public void setCitySize(long citySize) {
+    public void setCitySize(Long citySize) {
         this.citySize = citySize;
     }
 }

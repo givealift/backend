@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CityRepository extends JpaRepository<City, String> {
-    List<City> findByCountryName(String countryName);
-
-    List<City> findByProvinceName(String provinceName);
+public interface CityRepository extends JpaRepository<City, Long> {
+//    List<City> findByCountryName(String countryName);
+//
+//    List<City> findByProvinceName(String provinceName);
 }

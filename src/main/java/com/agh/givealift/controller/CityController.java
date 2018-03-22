@@ -1,8 +1,6 @@
 package com.agh.givealift.controller;
 
 import com.agh.givealift.model.entity.City;
-import com.agh.givealift.model.entity.Country;
-import com.agh.givealift.model.entity.Province;
 import com.agh.givealift.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,10 +26,6 @@ public class CityController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public ResponseEntity<?> update(@RequestBody List<City> cities) {
-//        cities.forEach(c -> System.out.println(
-//                " n: " + c.getName() +
-//                " c: " + c.getCountry().getName() +
-//                " p: " + c.getProvince().getName()));
         cityService.saveAll(cities);
         return new ResponseEntity<>(HttpStatus.OK);
     }
