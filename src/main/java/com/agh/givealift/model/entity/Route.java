@@ -7,15 +7,15 @@ import javax.persistence.Id;
 
 @Entity
 public class Route {
-    private long id;
+    private long routeId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getId() {
-        return id;
+    public long getRouteId() {
+        return routeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setRouteId(long routeId) {
+        this.routeId = routeId;
     }
 }
