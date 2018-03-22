@@ -1,7 +1,7 @@
 package com.agh.givealift.controller;
 
-import com.agh.givealift.model.entity.Route;
-import com.agh.givealift.service.RouteService;
+import com.agh.givealift.model.entity.City;
+import com.agh.givealift.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +14,20 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/route")
-public class RouteController {
+@RequestMapping("/city")
+public class CityController {
     @Autowired
-    RouteService routeService;
+    CityService cityService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity<List<Route>> list() {
-        return new ResponseEntity<>(routeService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<City>> list() {
+        return new ResponseEntity<>(cityService.list(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<List<Route>> add(@RequestBody Route route) {
-        routeService.add(route);
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public ResponseEntity<?> update(@RequestBody List<City> cities) {
+        cityService.saveAll(cities);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }
