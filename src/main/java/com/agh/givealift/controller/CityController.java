@@ -16,8 +16,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/city")
 public class CityController {
+    private final CityService cityService;
+
     @Autowired
-    CityService cityService;
+    public CityController(CityService cityService) {
+        this.cityService = cityService;
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<City>> list() {

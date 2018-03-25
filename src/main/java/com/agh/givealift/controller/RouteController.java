@@ -16,8 +16,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/route")
 public class RouteController {
+    private final RouteService routeService;
+
     @Autowired
-    RouteService routeService;
+    public RouteController(RouteService routeService) {
+        this.routeService = routeService;
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<Route>> list() {
