@@ -8,10 +8,7 @@ import com.agh.givealift.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CityService {
@@ -45,6 +42,14 @@ public class CityService {
                     city.getCityInfo());
         }
         return city;
+    }
+
+    public List<City> search(String name) {
+        List<City> result = cityRepository.findByNameStartingWithIgnoreCase(name);
+        result.forEach(r -> System.out.println("b: " + r.getName()));
+        result.sort((o1, o2) -> o2.getCityInfo().getPopulation().compareTo(o1.getCityInfo().getPopulation()));
+        result.forEach(r -> System.out.println("b: " + r.getName()));
+        return result;
     }
 
     public void generate() {
@@ -167,4 +172,6 @@ public class CityService {
         }
         saveAll(cities);
     }
+
+
 }
