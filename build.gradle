@@ -30,7 +30,10 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
 //    compile "org.hibernate:hibernate-java8:5.1.0.Final"
     compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.2.15.Final'
-
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.6.0'
+    compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.7.RELEASE'
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.0.RELEASE'
     runtime('org.postgresql:postgresql')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
