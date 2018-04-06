@@ -1,10 +1,11 @@
 package com.agh.givealift.controller;
 
+import com.agh.givealift.exceptions.FacebookAccessException;
 import com.agh.givealift.model.AuthToken;
-import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.model.entity.GalUser;
-import com.agh.givealift.model.request.Registration;
+import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.security.JwtTokenUtil;
+import com.agh.givealift.service.FacebookService;
 import com.agh.givealift.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +18,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.naming.AuthenticationException;
 
 @Controller
 @RequestMapping("/api")
 public class UserController {
+
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
     @Autowired
     private UserService userService;
 
+
+    @Autowired
+    FacebookService facebookService;
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+    public ResponseEntity signIn(@RequestBody LoginUser loginUser) throws AuthenticationException {
 
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -47,6 +52,7 @@ public class UserController {
         return ResponseEntity.ok(new AuthToken(token));
     }
 
+
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
     public ResponseEntity<?> signUp(@RequestBody LoginUser loginUser) {
         userService.signUp(loginUser);
@@ -55,13 +61,30 @@ public class UserController {
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
     public ResponseEntity<?> list() {
-        return new ResponseEntity<>(userService.list(), HttpStatus.OK);
+        return new ResponseEntity<>(facebookService.createFacebookAuthorizationURL(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/facebook/url", method = RequestMethod.GET)
+    public ResponseEntity<?> facebookUrl() {
+        return new ResponseEntity<>(facebookService.createFacebookAuthorizationURL(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/facebook", method = RequestMethod.GET)
+    public ResponseEntity<?> facebook(@RequestParam("code") String code) {
+        GalUser user = null;
+        try {
+            user = facebookService.createFacebookAccessToken(code);
+        } catch (FacebookAccessException e) {
+            return new ResponseEntity<>("Cannot sign in with Facebook", HttpStatus.FORBIDDEN);
+        }
+        final Authentication authentication =
+                new UsernamePasswordAuthenticationToken(
+                        user.getLogin(),
+                        user.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String token = jwtTokenUtil.generateToken(user);
+        return new ResponseEntity<>(new AuthToken(token), HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<?> registration(@RequestBody Registration registration) {
-      //  userService.signUp(registration);
-        return new ResponseEntity<>(new GalUser(), HttpStatus.OK);
-    }
 }
