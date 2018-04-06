@@ -14,6 +14,7 @@ public class GalUser {
     private Long galUserId;
     private String login;
     private String password;
+    private String facebookId;
 
     public GalUser(String login, String password) {
         this.login = login;
@@ -29,6 +30,14 @@ public class GalUser {
 
     public void setGalUserId(Long galUserId) {
         this.galUserId = galUserId;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
     }
 
 
