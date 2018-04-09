@@ -1,12 +1,15 @@
 package com.agh.givealift.model.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Route {
     private Long routeId;
     private Localization from;
     private Localization to;
+    private int numberOfSeats;
+    private Date departureTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,5 +38,21 @@ public class Route {
 
     public void setTo(Localization to) {
         this.to = to;
+    }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
+    }
+
+    public Date getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Date departureTime) {
+        this.departureTime = departureTime;
     }
 }

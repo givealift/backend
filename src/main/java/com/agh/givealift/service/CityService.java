@@ -3,7 +3,6 @@ package com.agh.givealift.service;
 
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.CityInfo;
-import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,12 @@ import java.util.*;
 
 @Service
 public class CityService {
+    private final CityRepository cityRepository;
+
     @Autowired
-    private CityRepository cityRepository;
+    public CityService(CityRepository cityRepository) {
+        this.cityRepository = cityRepository;
+    }
 
     public List<City> list() {
         return cityRepository.findAll();
