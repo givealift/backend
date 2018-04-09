@@ -13,23 +13,18 @@ import java.util.Optional;
 
 @Service
 public class RouteService {
-    @Autowired
-    private RouteRepository routeRepository;
+    private final RouteRepository routeRepository;
+    private final CityService cityService;
 
     @Autowired
-    private CityService cityService;
-
-    public List<Route> getAll() {
-        return routeRepository.findAll();
+    public RouteService(RouteRepository routeRepository, CityService cityService) {
+        this.routeRepository = routeRepository;
+        this.cityService = cityService;
     }
 
 
-    //TODO delete
-    public void generate() {
-        for (int i = 0; i < 3; i++) {
-            Route r1 = new Route();
-            routeRepository.save(r1);
-        }
+    public List<Route> getAll() {
+        return routeRepository.findAll();
     }
 
     public void add(Route route) {

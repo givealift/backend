@@ -26,16 +26,18 @@ import javax.naming.AuthenticationException;
 @RequestMapping("/api")
 public class UserController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private UserService userService;
-
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserService userService;
+    private final FacebookService facebookService;
 
     @Autowired
-    FacebookService facebookService;
+    public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userService = userService;
+        this.facebookService = facebookService;
+    }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity signIn(@RequestBody LoginUser loginUser) throws AuthenticationException {
