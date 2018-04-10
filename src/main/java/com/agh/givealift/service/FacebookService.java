@@ -19,12 +19,14 @@ import java.util.UUID;
 
 @Service
 public class FacebookService {
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    public FacebookService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     public String createFacebookAuthorizationURL() {
