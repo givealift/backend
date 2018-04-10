@@ -10,7 +10,7 @@ import java.util.Collection;
 @Component
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
-    GalUser user;
+    private GalUser user;
 
     public UserDetails() {
     }
@@ -25,7 +25,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
         this.user = user;
 
     }
-    public GalUser getUser(){
+
+    public GalUser getUser() {
         return user;
     }
 
