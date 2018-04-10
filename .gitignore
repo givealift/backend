@@ -2,6 +2,10 @@
 /build/
 /out/
 
+#Cover-Of-Darkness
+!Cover-Of-Darkness-all.jar
+
+
 ### STS ###
 .apt_generated
 .classpath

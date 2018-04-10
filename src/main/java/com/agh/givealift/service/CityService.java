@@ -5,6 +5,8 @@ import com.agh.givealift.Configuration;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.CityInfo;
 import com.agh.givealift.repository.CityRepository;
+import com.stefanik.cod.controller.COD;
+import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.*;
 @Service
 public class CityService {
     private final CityRepository cityRepository;
+    private final COD cod = CODFactory.get();
 
     @Autowired
     public CityService(CityRepository cityRepository) {
@@ -33,26 +36,18 @@ public class CityService {
 
     public City getOrCreate(City city) {
         if (city.getCityId() != null) {
-            System.out.println(city.getCityId() + " n: " +
-                    city.getName() + " c " +
-                    city.getCountry() + " p " +
-                    city.getProvince() + " ci: " +
-                    city.getCityInfo());
+            cod.i("CITY getOrCreate before", city);
             city = cityRepository.findById(city.getCityId()).orElse(city);
-            System.out.println(city.getCityId() + " n: " +
-                    city.getName() + " c " +
-                    city.getCountry() + " p " +
-                    city.getProvince() + " ci: " +
-                    city.getCityInfo());
+            cod.i("CITY getOrCreate after", city);
         }
         return city;
     }
 
     public List<City> search(String name) {
         List<City> result = cityRepository.findByNameStartingWithIgnoreCase(name);
-        result.forEach(r -> System.out.println("b: " + r.getName()));
+        cod.i("CITY search", result);
         result.sort((o1, o2) -> o2.getCityInfo().getPopulation().compareTo(o1.getCityInfo().getPopulation()));
-        result.forEach(r -> System.out.println("b: " + r.getName()));
+        cod.i("CITY search after sort", result);
         return result;
     }
 

@@ -12,8 +12,10 @@ public class Route {
     private Long ownerId;
     private Localization from;
     private Localization to;
-    private int numberOfSeats;
     private Date departureTime;
+    private int numberOfSeats;
+    private int numberOfOccupiedSeats;
+    private Double price;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,5 +69,21 @@ public class Route {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public int getNumberOfOccupiedSeats() {
+        return numberOfOccupiedSeats;
+    }
+
+    public void setNumberOfOccupiedSeats(int numberOfOccupiedSeats) {
+        this.numberOfOccupiedSeats = numberOfOccupiedSeats;
     }
 }
