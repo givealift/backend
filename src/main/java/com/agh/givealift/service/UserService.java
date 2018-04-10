@@ -29,7 +29,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void signUp(LoginUser loginUser) {
-        userRepository.save(new GalUser(loginUser.getUsername(), passwordEncoder.encode(loginUser.getPassword())));
+    public GalUser signUp(LoginUser loginUser) {
+        return userRepository.save(new GalUser(loginUser.getUsername(), passwordEncoder.encode(loginUser.getPassword())));
     }
 }

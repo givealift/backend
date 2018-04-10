@@ -1,11 +1,15 @@
 package com.agh.givealift.model.entity;
 
+import com.agh.givealift.Configuration;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Route {
     private Long routeId;
+    private Long ownerId;
     private Localization from;
     private Localization to;
     private int numberOfSeats;
@@ -48,11 +52,20 @@ public class Route {
         this.numberOfSeats = numberOfSeats;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Configuration.DATA_PATTERN)
     public Date getDepartureTime() {
         return departureTime;
     }
 
     public void setDepartureTime(Date departureTime) {
         this.departureTime = departureTime;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }
