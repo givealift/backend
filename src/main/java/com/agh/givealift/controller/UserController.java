@@ -4,6 +4,8 @@ import com.agh.givealift.exceptions.FacebookAccessException;
 import com.agh.givealift.model.AuthToken;
 import com.agh.givealift.model.entity.GalUser;
 import com.agh.givealift.model.request.LoginUser;
+import com.agh.givealift.model.response.AuthenticationResponse;
+import com.agh.givealift.model.response.GalUserResponse;
 import com.agh.givealift.security.JwtTokenUtil;
 import com.agh.givealift.service.FacebookService;
 import com.agh.givealift.service.UserService;
@@ -51,14 +53,13 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final GalUser user = userService.getUserByUsername(loginUser.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthToken(token));
+        return ResponseEntity.ok(new AuthenticationResponse(user, new AuthToken(token)));
     }
 
 
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
     public ResponseEntity<?> signUp(@RequestBody LoginUser loginUser) {
-        userService.signUp(loginUser);
-        return new ResponseEntity<>(userService.list(), HttpStatus.CREATED);
+        return new ResponseEntity<>(new GalUserResponse(userService.signUp(loginUser)), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
