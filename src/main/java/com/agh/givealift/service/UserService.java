@@ -1,8 +1,8 @@
 package com.agh.givealift.service;
 
 
-import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.model.entity.GalUser;
+import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,11 +25,18 @@ public class UserService {
         return userRepository.findByLogin(username);
     }
 
+    public GalUser getUserById(long id) {
+        return userRepository.getOne(id);
+    }
+
+
     public List<GalUser> list() {
         return userRepository.findAll();
     }
 
-    public GalUser signUp(LoginUser loginUser) {
-        return userRepository.save(new GalUser(loginUser.getUsername(), passwordEncoder.encode(loginUser.getPassword())));
+    public Long signUp(SignUpUserRequest signUpUserRequest) {
+        GalUser newUser = signUpUserRequest.mapToGalUserWithoutPassword();
+        newUser.setPassword(passwordEncoder.encode(signUpUserRequest.getPassword()));
+        return userRepository.save(newUser).getGalUserId();
     }
 }

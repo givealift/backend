@@ -1,50 +1,28 @@
-package com.agh.givealift.model.entity;
+package com.agh.givealift.model.request;
 
-import org.springframework.lang.NonNull;
-
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-
-@Entity
-public class GalUser {
+import com.agh.givealift.model.entity.GalUser;
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long galUserId;
-    @Column(unique = true)
+public class SignUpUserRequest {
+
     private String login;
-    @NonNull
     private String password;
-    @Column(unique = true)
     private String facebookId;
     private String firstName;
     private String lastName;
-    @Email
     private String email;
     private String phone;
     private String gender;
 
-    public GalUser() {
-    }
-
-    public GalUser(String login, String password, String facebookId, String firstName, String lastName, String email, String phone, String gender) {
-        this.login = login;
-        this.password = password;
-        this.facebookId = facebookId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.gender = gender;
-    }
-
-    public Long getGalUserId() {
-        return galUserId;
-    }
-
-    public void setGalUserId(Long galUserId) {
-        this.galUserId = galUserId;
+    public GalUser mapToGalUserWithoutPassword() {
+        GalUser user = new GalUser();
+        user.setLogin(login);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setGender(gender);
+        return user;
     }
 
     public String getLogin() {
