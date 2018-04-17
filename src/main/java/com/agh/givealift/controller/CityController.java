@@ -6,16 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @Controller
-@RequestMapping("/city")
+@RequestMapping("/api/city")
 public class CityController {
     private final CityService cityService;
 
@@ -24,27 +21,33 @@ public class CityController {
         this.cityService = cityService;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseEntity<?> search(
+            @RequestParam String search,
+            @RequestParam int limit
+    ) {
+        return new ResponseEntity<>(cityService.search(search, limit), HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<City>> list() {
         return new ResponseEntity<>(cityService.list(), HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/generate", method = RequestMethod.POST)
+    public ResponseEntity<?> generate(@RequestParam(value = "limit", required = false, defaultValue = "100") int limit) {
+        cityService.generate(limit);
+        return new ResponseEntity<>(cityService.list(), HttpStatus.OK);
+    }
+
+    @Deprecated
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public ResponseEntity<?> update(@RequestBody List<City> cities) {
         cityService.saveAll(cities);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/search/{name}", method = RequestMethod.GET)
-    public ResponseEntity<?> search(@PathVariable("name") String name) {
-
-        return new ResponseEntity<>(cityService.search(name),HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/generate", method = RequestMethod.GET)
-    public ResponseEntity<?> generate() {
-        cityService.generate();
-        return new ResponseEntity<>(cityService.list(),HttpStatus.OK);
     }
 
 }

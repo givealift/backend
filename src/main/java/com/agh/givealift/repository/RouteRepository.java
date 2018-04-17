@@ -11,4 +11,6 @@ import java.util.List;
 public interface RouteRepository extends JpaRepository<Route, String> {
     List<Route> findByDepartureTimeBetweenAndFromCityCityIdAndToCityCityId(Date dateStart, Date dateEnd, Long from, Long to);
 
+    Route findByRouteId(Long id);
+
 }
