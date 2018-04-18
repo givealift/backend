@@ -40,7 +40,7 @@ public class UserController {
         this.facebookService = facebookService;
     }
 
-    @GetMapping(value = "/authenticate")
+    @PostMapping(value = "/authenticate")
     public ResponseEntity signIn(@RequestBody LoginUser loginUser) throws AuthenticationException {
 
         final Authentication authentication = authenticationManager.authenticate(
@@ -66,9 +66,24 @@ public class UserController {
         return new ResponseEntity<>(userService.list(), HttpStatus.OK);
     }
 
+    @PutMapping(value = "/user/edit/{id}")
+    public ResponseEntity<?> editUser(@PathVariable("id") long id, @RequestBody SignUpUserRequest signUpUserRequest) {
+        return new ResponseEntity<>(userService.editUser(signUpUserRequest, id), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/user/edit/password/{id}")
+    public ResponseEntity<?> editPassword(@PathVariable("id") long id, @RequestBody String password) {
+        return new ResponseEntity<>(userService.editUserPassword(password, id), HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/user/public{id}")
+    public ResponseEntity<?> getPublicInfo(@PathVariable("id") long id) {
+        return new ResponseEntity<>(userService.getUserPublicInfo(id), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/user/{id}")
     public ResponseEntity<GalUserResponse> list(@PathVariable("id") long id) {
-        return new ResponseEntity<GalUserResponse>(new GalUserResponse(userService.getUserById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(new GalUserResponse(userService.getUserById(id)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/facebook/url", method = RequestMethod.GET)

@@ -24,12 +24,13 @@ public class GalUser {
     private String email;
     private String phone;
     private String gender;
+    private String role;
 
     public GalUser() {
     }
 
     public GalUser(String login, String password, String facebookId, String firstName, String lastName, String email, String phone, String gender) {
-        this.login = login;
+
         this.password = password;
         this.facebookId = facebookId;
         this.firstName = firstName;
@@ -109,5 +110,28 @@ public class GalUser {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "GalUser{" +
+                "galUserId=" + galUserId +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", facebookId='" + facebookId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
     }
 }
