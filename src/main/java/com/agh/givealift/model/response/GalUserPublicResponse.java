@@ -1,43 +1,23 @@
-package com.agh.givealift.model.request;
+package com.agh.givealift.model.response;
 
 import com.agh.givealift.model.entity.GalUser;
 
-
-public class SignUpUserRequest {
-
-    private String login;
-    private String password;
+public class GalUserPublicResponse {
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private String gender;
 
-    public GalUser mapToGalUserWithoutPassword(GalUser user) {
-        user.setLogin(login);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPhone(phone);
-        user.setGender(gender);
-
-        return user;
+    public GalUserPublicResponse() {
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public GalUserPublicResponse(GalUser galUser) {
+        this.firstName = galUser.getFirstName();
+        this.lastName = galUser.getLastName();
+        this.email = galUser.getEmail();
+        this.phone = galUser.getPhone();
+        this.gender = galUser.getGender();
     }
 
     public String getFirstName() {

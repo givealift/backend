@@ -17,7 +17,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList("USER");
+        return AuthorityUtils.createAuthorityList(user.getRole());
 
     }
 
@@ -60,4 +60,10 @@ public class UserDetails implements org.springframework.security.core.userdetail
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "us88er=" + user +
+                '}';
+    }
 }
