@@ -18,8 +18,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
+import java.io.IOException;
 import java.util.Collections;
 
 @RestController
@@ -71,10 +73,22 @@ public class UserController {
         return new ResponseEntity<>(userService.editUser(signUpUserRequest, id), HttpStatus.CREATED);
     }
 
+    @PostMapping(value = "/user/photo/{id}")
+    public ResponseEntity<?> photoUser(@PathVariable("id") long id, @RequestParam("file") MultipartFile file) {
+
+        return new ResponseEntity<>(userService.saveUserPhoto(id, file), HttpStatus.OK);
+    }
+
     @PutMapping(value = "/user/edit/password/{id}")
     public ResponseEntity<?> editPassword(@PathVariable("id") long id, @RequestBody String password) {
         return new ResponseEntity<>(userService.editUserPassword(password, id), HttpStatus.CREATED);
     }
+
+    @GetMapping(value = "/user/photo/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) throws IOException {
+        return new ResponseEntity<>(userService.getUserPhoto(id), HttpStatus.OK);
+    }
+
 
     @GetMapping(value = "/user/public{id}")
     public ResponseEntity<?> getPublicInfo(@PathVariable("id") long id) {

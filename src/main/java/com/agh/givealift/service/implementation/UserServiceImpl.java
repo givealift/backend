@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -28,6 +30,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByLogin(username);
     }
 
+
+    public long saveUserPhoto(long id, MultipartFile file) {
+        GalUser user = userRepository.getOne(id);
+        try {
+            user.setPhoto(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userRepository.save(user);
+        return user.getGalUserId();
+    }
+
+    @Override
+    public byte[] getUserPhoto(long id) {
+        return userRepository.getOne(id).getPhoto();
+    }
 
     @PreAuthorize("denyAll()")
     public GalUserPublicResponse getUserPublicInfo(long id) {
