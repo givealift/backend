@@ -25,6 +25,8 @@ public class GalUser {
     private String phone;
     private String gender;
     private String role;
+    @Lob
+    private byte[] photo;
 
     public GalUser() {
     }
@@ -118,6 +120,14 @@ public class GalUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     @Override

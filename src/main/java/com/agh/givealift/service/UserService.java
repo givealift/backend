@@ -3,6 +3,7 @@ package com.agh.givealift.service;
 import com.agh.givealift.model.entity.GalUser;
 import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.GalUserPublicResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,6 +17,10 @@ public interface UserService {
     List<GalUser> list();
 
     Long signUp(SignUpUserRequest signUpUserRequest);
+
+    long saveUserPhoto(long id, MultipartFile file);
+
+    byte[] getUserPhoto(long id);
 
     Long editUser(SignUpUserRequest signUpUserRequest, long id);
 
