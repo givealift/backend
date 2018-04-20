@@ -1,35 +1,28 @@
 package com.agh.givealift.service;
 
-
-import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.model.entity.GalUser;
-import com.agh.givealift.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+import com.agh.givealift.model.request.SignUpUserRequest;
+import com.agh.givealift.model.response.GalUserPublicResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Service
-public class UserService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+public interface UserService {
+    GalUser getUserByUsername(String username);
 
-    @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    GalUser getUserById(long id);
 
-    public GalUser getUserByUsername(String username) {
-        return userRepository.findByLogin(username);
-    }
+    GalUserPublicResponse getUserPublicInfo(long id);
 
-    public List<GalUser> list() {
-        return userRepository.findAll();
-    }
+    List<GalUser> list();
 
-    public GalUser signUp(LoginUser loginUser) {
-        return userRepository.save(new GalUser(loginUser.getUsername(), passwordEncoder.encode(loginUser.getPassword())));
-    }
+    Long signUp(SignUpUserRequest signUpUserRequest);
+
+    long saveUserPhoto(long id, MultipartFile file);
+
+    byte[] getUserPhoto(long id);
+
+    Long editUser(SignUpUserRequest signUpUserRequest, long id);
+
+    long editUserPassword(String password, long id);
 }

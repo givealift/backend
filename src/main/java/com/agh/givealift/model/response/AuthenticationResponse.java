@@ -1,30 +1,27 @@
 package com.agh.givealift.model.response;
 
-import com.agh.givealift.model.AuthToken;
-import com.agh.givealift.model.entity.GalUser;
-
 public class AuthenticationResponse {
-    private GalUserResponse galUserResponse;
-    private AuthToken authToken;
+    private long userId;
+    private String token;
 
-    public AuthenticationResponse(GalUser galUser, AuthToken authToken) {
-        this.galUserResponse = new GalUserResponse(galUser);
-        this.authToken = authToken;
+    public AuthenticationResponse(long id, String token) {
+        this.userId = id;
+        this.token = token;
     }
 
-    public GalUserResponse getGalUserResponse() {
-        return galUserResponse;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setGalUserResponse(GalUserResponse galUserResponse) {
-        this.galUserResponse = galUserResponse;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public AuthToken getAuthToken() {
-        return authToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setAuthToken(AuthToken authToken) {
-        this.authToken = authToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

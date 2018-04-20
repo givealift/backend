@@ -2,23 +2,22 @@ package com.agh.givealift.model.response;
 
 import com.agh.givealift.model.entity.GalUser;
 
-public class GalUserResponse {
-
+public class GalUserPublicResponse {
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private String gender;
 
-    public GalUserResponse(GalUser galUser) {
+    public GalUserPublicResponse() {
+    }
+
+    public GalUserPublicResponse(GalUser galUser) {
         this.firstName = galUser.getFirstName();
         this.lastName = galUser.getLastName();
         this.email = galUser.getEmail();
         this.phone = galUser.getPhone();
         this.gender = galUser.getGender();
-    }
-
-    public GalUserResponse() {
     }
 
     public String getFirstName() {
@@ -61,4 +60,3 @@ public class GalUserResponse {
         this.gender = gender;
     }
 }
-
