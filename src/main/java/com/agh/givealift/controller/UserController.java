@@ -3,14 +3,18 @@ package com.agh.givealift.controller;
 import com.agh.givealift.exceptions.FacebookAccessException;
 import com.agh.givealift.model.AuthToken;
 import com.agh.givealift.model.entity.GalUser;
+import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.AuthenticationResponse;
 import com.agh.givealift.model.response.GalUserResponse;
 import com.agh.givealift.security.JwtTokenUtil;
 import com.agh.givealift.service.FacebookService;
+import com.agh.givealift.service.RouteService;
 import com.agh.givealift.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.naming.AuthenticationException;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -33,13 +38,16 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
     private final FacebookService facebookService;
+    private final RouteService routeService;
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService) {
+    public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService,
+            RouteService routeService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
         this.facebookService = facebookService;
+        this.routeService = routeService;
     }
 
     @PostMapping(value = "/authenticate")
@@ -87,6 +95,11 @@ public class UserController {
     @GetMapping(value = "/user/photo/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) throws IOException {
         return new ResponseEntity<>(userService.getUserPhoto(id), HttpStatus.OK);
+    }
+    
+     @GetMapping(value = "/user/route/{id}")
+    public ResponseEntity<List<Route>> getRoutes(@PathVariable("id") long id,@RequestParam("page") int page) throws IOException {
+        return new ResponseEntity<>(routeService.userRoute(id,new PageRequest(page, 10)), HttpStatus.OK);
     }
 
 
