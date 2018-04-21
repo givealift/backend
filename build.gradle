@@ -36,11 +36,13 @@ dependencies {
     compile group: 'org.springframework.social', name: 'spring-social-facebook', version: '2.0.3.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.0.4.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.0.4.RELEASE'
+    compile "io.springfox:springfox-swagger2:2.6.1"
+    compile "io.springfox:springfox-swagger-ui:2.6.1"
 
-    runtime('org.postgresql:postgresql')
-    // runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
+   // runtime('org.postgresql:postgresql')
+   runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
     testCompile('org.springframework.boot:spring-boot-starter-test')
-	compile files('gradle/libs/Cover-Of-Darkness-all.jar')
+	  compile files('gradle/libs/Cover-Of-Darkness-all.jar')
 
 }
 

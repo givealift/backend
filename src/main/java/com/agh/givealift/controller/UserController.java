@@ -4,6 +4,7 @@ import com.agh.givealift.exceptions.FacebookAccessException;
 import com.agh.givealift.model.AuthToken;
 import com.agh.givealift.model.entity.GalUser;
 import com.agh.givealift.model.request.LoginUser;
+import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.AuthenticationResponse;
 import com.agh.givealift.model.response.GalUserResponse;
 import com.agh.givealift.security.JwtTokenUtil;
@@ -16,16 +17,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
+import java.io.IOException;
+import java.util.Collections;
 
-@Controller
+@RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final AuthenticationManager authenticationManager;
@@ -41,7 +42,7 @@ public class UserController {
         this.facebookService = facebookService;
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @PostMapping(value = "/authenticate")
     public ResponseEntity signIn(@RequestBody LoginUser loginUser) throws AuthenticationException {
 
         final Authentication authentication = authenticationManager.authenticate(
@@ -53,23 +54,55 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final GalUser user = userService.getUserByUsername(loginUser.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthenticationResponse(user, new AuthToken(token)));
+        return ResponseEntity.ok(new AuthenticationResponse(user.getGalUserId(), token));
     }
 
 
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
-    public ResponseEntity<?> signUp(@RequestBody LoginUser loginUser) {
-        return new ResponseEntity<>(new GalUserResponse(userService.signUp(loginUser)), HttpStatus.CREATED);
+    public ResponseEntity<?> signUp(@RequestBody SignUpUserRequest signUpUserRequest) {
+        return new ResponseEntity<>(userService.signUp(signUpUserRequest), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
     public ResponseEntity<?> list() {
-        return new ResponseEntity<>(facebookService.createFacebookAuthorizationURL(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.list(), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/user/edit/{id}")
+    public ResponseEntity<?> editUser(@PathVariable("id") long id, @RequestBody SignUpUserRequest signUpUserRequest) {
+        return new ResponseEntity<>(userService.editUser(signUpUserRequest, id), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/user/photo/{id}")
+    public ResponseEntity<?> photoUser(@PathVariable("id") long id, @RequestParam("file") MultipartFile file) {
+
+        return new ResponseEntity<>(userService.saveUserPhoto(id, file), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/user/edit/password/{id}")
+    public ResponseEntity<?> editPassword(@PathVariable("id") long id, @RequestBody String password) {
+        return new ResponseEntity<>(userService.editUserPassword(password, id), HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/user/photo/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) throws IOException {
+        return new ResponseEntity<>(userService.getUserPhoto(id), HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/user/public{id}")
+    public ResponseEntity<?> getPublicInfo(@PathVariable("id") long id) {
+        return new ResponseEntity<>(userService.getUserPublicInfo(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user/{id}")
+    public ResponseEntity<GalUserResponse> list(@PathVariable("id") long id) {
+        return new ResponseEntity<>(new GalUserResponse(userService.getUserById(id)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/facebook/url", method = RequestMethod.GET)
     public ResponseEntity<?> facebookUrl() {
-        return new ResponseEntity<>(facebookService.createFacebookAuthorizationURL(), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("response", facebookService.createFacebookAuthorizationURL()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
