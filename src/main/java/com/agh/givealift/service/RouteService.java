@@ -4,7 +4,6 @@ package com.agh.givealift.service;
 import com.agh.givealift.Configuration;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Route;
-import com.agh.givealift.repository.CityRepository;
 import com.agh.givealift.repository.RouteRepository;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
@@ -15,7 +14,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -28,7 +26,6 @@ public class RouteService {
         this.routeRepository = routeRepository;
         this.cityService = cityService;
     }
-
 
     public List<Route> getAll() {
         return routeRepository.findAll();
