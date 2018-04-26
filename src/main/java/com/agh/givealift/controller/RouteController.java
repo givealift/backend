@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 
-@Controller
+@RestController
 @RequestMapping("/route")
 public class RouteController {
     private final RouteService routeService;
