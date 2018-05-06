@@ -8,7 +8,9 @@ import com.agh.givealift.repository.RouteRepository;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.time.Duration;
 import java.time.Instant;
@@ -38,6 +40,10 @@ public class RouteService {
         route.getTo().setCity(toCity);
         cod.i("ADD ROUTE: ", route);
         return routeRepository.save(route);
+    }
+    
+    public List<Route> userRoute(long id,Pageable pageable){
+      return   routeRepository.findByOwnerId(id,pageable);  
     }
 
     public List<Route> search(Long from, Long to, Date date) {
