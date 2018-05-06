@@ -31,13 +31,13 @@ public class RouteService {
         return routeRepository.findAll();
     }
 
-    public void add(Route route) {
+    public Route add(Route route) {
         City fromCity = cityService.getOrCreate(route.getFrom().getCity());
         City toCity = cityService.getOrCreate(route.getTo().getCity());
         route.getFrom().setCity(fromCity);
         route.getTo().setCity(toCity);
         cod.i("ADD ROUTE: ", route);
-        routeRepository.save(route);
+        return routeRepository.save(route);
     }
 
     public List<Route> search(Long from, Long to, Date date) {
@@ -52,5 +52,9 @@ public class RouteService {
         cod.i("ROUTE search result", result);
         return result;
 
+    }
+
+    public Route get(long id) {
+        return routeRepository.findByRouteId(id);
     }
 }
