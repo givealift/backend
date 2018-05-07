@@ -79,7 +79,8 @@ public class RouteService {
             try {
                 modifyRoute(route, nullableRoute);
                 cod.i("UPDATED ROUTE: ", nullableRoute);
-                return Optional.of(nullableRoute);
+
+                return Optional.of(routeRepository.save(nullableRoute));
             } catch (UnknownCityException e) {
                 e.printStackTrace();
             }
