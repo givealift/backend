@@ -36,13 +36,8 @@ public class CityService {
         cityRepository.deleteAll();
     }
 
-    public City getOrCreate(City city) {
-        if (city.getCityId() != null) {
-            cod.i("CITY getOrCreate before", city);
-            city = cityRepository.findById(city.getCityId()).orElse(city);
-            cod.i("CITY getOrCreate after", city);
-        }
-        return city;
+    public Optional<City> get(Long cityId) {
+        return cityRepository.findById(cityId);
     }
 
     public List<City> search(String name, int limit) {
