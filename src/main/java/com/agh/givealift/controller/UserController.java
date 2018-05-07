@@ -12,6 +12,8 @@ import com.agh.givealift.security.JwtTokenUtil;
 import com.agh.givealift.service.FacebookService;
 import com.agh.givealift.service.RouteService;
 import com.agh.givealift.service.UserService;
+import com.stefanik.cod.controller.COD;
+import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +35,7 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class UserController {
-
+    private final static COD cod = CODFactory.get();
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
@@ -42,7 +44,7 @@ public class UserController {
 
     @Autowired
     public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService,
-            RouteService routeService) {
+                          RouteService routeService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
@@ -52,7 +54,7 @@ public class UserController {
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity signIn(@RequestBody LoginUser loginUser) throws AuthenticationException {
-
+        cod.i(loginUser);
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginUser.getUsername(),
@@ -68,6 +70,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
     public ResponseEntity<?> signUp(@RequestBody SignUpUserRequest signUpUserRequest) {
+        cod.i(signUpUserRequest);
         return new ResponseEntity<>(userService.signUp(signUpUserRequest), HttpStatus.CREATED);
     }
 
@@ -96,10 +99,10 @@ public class UserController {
     public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) throws IOException {
         return new ResponseEntity<>(userService.getUserPhoto(id), HttpStatus.OK);
     }
-    
-     @GetMapping(value = "/user/route/{id}")
-    public ResponseEntity<List<Route>> getRoutes(@PathVariable("id") long id,@RequestParam("page") int page) throws IOException {
-        return new ResponseEntity<>(routeService.userRoute(id,new PageRequest(page, 10)), HttpStatus.OK);
+
+    @GetMapping(value = "/user/route/{id}")
+    public ResponseEntity<List<Route>> getRoutes(@PathVariable("id") long id, @RequestParam("page") int page) throws IOException {
+        return new ResponseEntity<>(routeService.userRoute(id, new PageRequest(page, 10)), HttpStatus.OK);
     }
 
 

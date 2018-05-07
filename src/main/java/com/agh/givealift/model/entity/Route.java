@@ -13,8 +13,8 @@ public class Route {
     private Localization from;
     private Localization to;
     private Date departureTime;
-    private int numberOfSeats;
-    private int numberOfOccupiedSeats;
+    private Integer numberOfSeats;
+    private Integer numberOfOccupiedSeats;
     private Double price;
 
     @Id
@@ -46,11 +46,11 @@ public class Route {
         this.to = to;
     }
 
-    public int getNumberOfSeats() {
+    public Integer getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public void setNumberOfSeats(int numberOfSeats) {
+    public void setNumberOfSeats(Integer numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
 
@@ -79,11 +79,11 @@ public class Route {
         this.price = price;
     }
 
-    public int getNumberOfOccupiedSeats() {
+    public Integer getNumberOfOccupiedSeats() {
         return numberOfOccupiedSeats;
     }
 
-    public void setNumberOfOccupiedSeats(int numberOfOccupiedSeats) {
+    public void setNumberOfOccupiedSeats(Integer numberOfOccupiedSeats) {
         this.numberOfOccupiedSeats = numberOfOccupiedSeats;
     }
 }
