@@ -43,8 +43,10 @@ public class RouteService {
         if (fromCity.isPresent() && toCity.isPresent()) {
             route.getFrom().setCity(fromCity.get());
             route.getTo().setCity(toCity.get());
-            cod.i("ADD ROUTE: ", route);
-            return Optional.of(routeRepository.save(route));
+
+            route = routeRepository.save(route);
+            cod.i("ADDED ROUTE: ", route);
+            return Optional.of(route);
         }
         return Optional.empty();
     }
@@ -76,6 +78,7 @@ public class RouteService {
         if (nullableRoute != null) {
             try {
                 modifyRoute(route, nullableRoute);
+                cod.i("UPDATED ROUTE: ", nullableRoute);
                 return Optional.of(nullableRoute);
             } catch (UnknownCityException e) {
                 e.printStackTrace();

@@ -3,6 +3,8 @@ package com.agh.givealift.controller;
 import com.agh.givealift.Configuration;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.service.RouteService;
+import com.stefanik.cod.controller.COD;
+import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/api/route")
 public class RouteController {
+    private static final COD cod = CODFactory.get();
     private final RouteService routeService;
 
     @Autowired
@@ -30,7 +33,7 @@ public class RouteController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<List<Route>> add(@RequestBody Route route, UriComponentsBuilder ucBuilder) {
         //TODO  VALIDATION
-
+        cod.i(route);
         if (routeService.add(route).isPresent()) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ucBuilder.path("/api/route/{id}").buildAndExpand(route.getRouteId()).toUri());
