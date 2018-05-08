@@ -68,7 +68,6 @@ public class FacebookService {
 
     private GalUser createUser(User facebookUser) {
         GalUser user = new GalUser();
-        user.setLogin(facebookUser.getEmail());
         user.setFacebookId(facebookUser.getId());
         user.setPassword(passwordEncoder.encode(generateString()));
         userRepository.save(user);

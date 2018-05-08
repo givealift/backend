@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public GalUser getUserByUsername(String username) {
-        return userRepository.findByLogin(username);
+        return userRepository.findByEmail(username);
     }
 
 

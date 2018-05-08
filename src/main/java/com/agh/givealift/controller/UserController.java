@@ -15,7 +15,6 @@ import com.agh.givealift.service.UserService;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -131,7 +130,7 @@ public class UserController {
         }
         final Authentication authentication =
                 new UsernamePasswordAuthenticationToken(
-                        user.getLogin(),
+                        user.getEmail(),
                         user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = jwtTokenUtil.generateToken(user);
