@@ -12,16 +12,16 @@ public class GalUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long galUserId;
-    @Column(unique = true)
-    private String login;
+
     @NonNull
     private String password;
     @Column(unique = true)
     private String facebookId;
     private String firstName;
-    private String lastName;
+    @Column(unique = true, nullable = false)
     @Email
     private String email;
+    private String lastName;
     private String phone;
     private String gender;
     private String role;
@@ -31,7 +31,7 @@ public class GalUser {
     public GalUser() {
     }
 
-    public GalUser(String login, String password, String facebookId, String firstName, String lastName, String email, String phone, String gender) {
+    public GalUser(String password, String facebookId, String firstName, String lastName, String email, String phone, String gender) {
 
         this.password = password;
         this.facebookId = facebookId;
@@ -48,14 +48,6 @@ public class GalUser {
 
     public void setGalUserId(Long galUserId) {
         this.galUserId = galUserId;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {
@@ -134,7 +126,6 @@ public class GalUser {
     public String toString() {
         return "GalUser{" +
                 "galUserId=" + galUserId +
-                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", facebookId='" + facebookId + '\'' +
                 ", firstName='" + firstName + '\'' +

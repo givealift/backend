@@ -1,7 +1,6 @@
 package com.agh.givealift.security;
 
 import com.agh.givealift.model.entity.GalUser;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -46,7 +45,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateToken(GalUser user) {
-        return doGenerateToken(user.getLogin());
+        return doGenerateToken(user.getEmail());
     }
 
     private String doGenerateToken(String subject) {

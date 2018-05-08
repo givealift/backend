@@ -5,7 +5,7 @@ import com.agh.givealift.model.entity.GalUser;
 
 public class SignUpUserRequest {
 
-    private String login;
+
     private String password;
     private String firstName;
     private String lastName;
@@ -14,7 +14,6 @@ public class SignUpUserRequest {
     private String gender;
 
     public GalUser mapToGalUserWithoutPassword(GalUser user) {
-        user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
@@ -24,13 +23,6 @@ public class SignUpUserRequest {
         return user;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     public String getPassword() {
         return password;
