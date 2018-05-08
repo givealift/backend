@@ -9,6 +9,7 @@ import com.agh.givealift.repository.RouteRepository;
 import com.agh.givealift.util.UnknownCityException;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
+import com.stefanik.cod.controller.CODGlobal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class RouteService {
     public RouteService(RouteRepository routeRepository, CityService cityService) {
         this.routeRepository = routeRepository;
         this.cityService = cityService;
+        CODGlobal.setImmersionLevel(4);
     }
 
     public List<Route> getAll() {
@@ -58,12 +60,13 @@ public class RouteService {
     public List<Route> search(Long from, Long to, Date date) {
         Instant beforeInstant = date.toInstant().minus(Duration.ofHours(Configuration.SEARCH_BEFORE_HOURS));
         Instant afterInstant = date.toInstant().plus(Duration.ofHours(Configuration.SEARCH_AFTER_HOURS));
-        cod.i("ROUTE search", from, to, date.toString(), Date.from(beforeInstant).toString(), Date.from(afterInstant).toString());
-        List<Route> result = routeRepository.findByDepartureTimeBetweenAndFromCityCityIdAndToCityCityId(
+        cod.e("ROUTE search", from, to, date.toString(), Date.from(beforeInstant).toString(), Date.from(afterInstant).toString());
+        List<Route> result = routeRepository.findRoutes(
                 Date.from(beforeInstant),
                 Date.from(afterInstant),
-                from, to);
-
+                from,
+                to
+        );
         cod.i("ROUTE search result", result);
         return result;
 
@@ -89,9 +92,7 @@ public class RouteService {
     }
 
     private void modifyRoute(Route route, Route nullableRoute) throws UnknownCityException {
-        if (route.getDepartureTime() != null) {
-            nullableRoute.setDepartureTime(route.getDepartureTime());
-        }
+
         if (route.getNumberOfOccupiedSeats() != null) {
             nullableRoute.setNumberOfOccupiedSeats(route.getNumberOfOccupiedSeats());
         }
@@ -101,26 +102,36 @@ public class RouteService {
         if (route.getPrice() != null) {
             nullableRoute.setPrice(route.getPrice());
         }
+        if (route.getStops() != null) {
+            nullableRoute.setStops(route.getStops());
+        }
         modifyLocalization(route.getFrom(), nullableRoute.getFrom());
         modifyLocalization(route.getTo(), nullableRoute.getTo());
     }
 
-    private void modifyLocalization(Localization newFrom, Localization from) throws UnknownCityException {
-        if (newFrom != null) {
-            if (newFrom.getBuildingNumber() != null) {
-                from.setBuildingNumber(newFrom.getBuildingNumber());
+    private void modifyLocalization(Localization newLocalization, Localization localization) throws UnknownCityException {
+        if (newLocalization != null) {
+            if (newLocalization.getBuildingNumber() != null) {
+                localization.setBuildingNumber(newLocalization.getBuildingNumber());
             }
-            if (newFrom.getStreet() != null) {
-                from.setStreet(newFrom.getStreet());
+            if (newLocalization.getStreet() != null) {
+                localization.setStreet(newLocalization.getStreet());
             }
-            if (newFrom.getCity() != null && newFrom.getCity().getCityId() != null) {
-                Optional<City> newCity = cityService.get(newFrom.getCity().getCityId());
+            if (newLocalization.getCity() != null && newLocalization.getCity().getCityId() != null) {
+                Optional<City> newCity = cityService.get(newLocalization.getCity().getCityId());
                 if (newCity.isPresent()) {
-                    from.setCity(newCity.get());
+                    localization.setCity(newCity.get());
                 } else {
                     throw new UnknownCityException();
                 }
             }
+            if (newLocalization.getDate() != null) {
+                localization.setDate(newLocalization.getDate());
+            }
         }
+    }
+
+    public void removeAll() {
+        routeRepository.deleteAll();
     }
 }

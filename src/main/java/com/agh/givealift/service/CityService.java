@@ -47,7 +47,7 @@ public class CityService {
         return result;
     }
 
-    public void generate(int limit) {
+    public List<City> generate(int limit) {
 
         List<List<Object>> v = Configuration.TMP_CITIES_LIST;
 
@@ -66,6 +66,7 @@ public class CityService {
         }
         removeAll();
         saveAll(cities);
+        return cities;
     }
 
 

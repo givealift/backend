@@ -1,8 +1,10 @@
 package com.agh.givealift.model.entity;
 
-import org.springframework.lang.NonNull;
+import com.agh.givealift.Configuration;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Localization {
@@ -10,6 +12,7 @@ public class Localization {
     private City city;
     private String street;
     private Integer buildingNumber;
+    private Date date;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,5 +47,14 @@ public class Localization {
 
     public void setBuildingNumber(Integer buildingNumber) {
         this.buildingNumber = buildingNumber;
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Configuration.DATA_PATTERN)
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

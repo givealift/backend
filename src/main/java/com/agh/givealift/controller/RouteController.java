@@ -1,6 +1,7 @@
 package com.agh.givealift.controller;
 
 import com.agh.givealift.Configuration;
+import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.service.RouteService;
 import com.stefanik.cod.controller.COD;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +36,28 @@ public class RouteController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<List<Route>> add(@RequestBody Route route, UriComponentsBuilder ucBuilder) {
         //TODO  VALIDATION
-        cod.i(route);
+        cod.i(
+                " f: " + route.getFrom().getDate() +
+                        " | s0: " + route.getStops().get(0).getDate() +
+                        " | s1: " + route.getStops().get(1).getDate() +
+                        " | t: " + route.getTo().getDate(),
+                route
+        );
+        //WTF SPRING?!
+        route.getFrom().setDate(Date.from(route.getFrom().getDate().toInstant().minus(Duration.ofHours(2))));
+        route.getTo().setDate(Date.from(route.getTo().getDate().toInstant().minus(Duration.ofHours(2))));
+        for (Localization s : route.getStops()) {
+            s.setDate(Date.from(s.getDate().toInstant().minus(Duration.ofHours(2))));
+        }
+
+        cod.i(
+                " f: " + route.getFrom().getDate() +
+                        " | s0: " + route.getStops().get(0).getDate() +
+                        " | s1: " + route.getStops().get(1).getDate() +
+                        " | t: " + route.getTo().getDate(),
+                route
+        );
+
         if (routeService.add(route).isPresent()) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ucBuilder.path("/api/route/{id}").buildAndExpand(route.getRouteId()).toUri());

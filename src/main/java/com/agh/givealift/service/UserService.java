@@ -25,4 +25,6 @@ public interface UserService {
     Long editUser(SignUpUserRequest signUpUserRequest, long id);
 
     long editUserPassword(String password, long id);
+
+    void removeAll();
 }

@@ -85,4 +85,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user).getGalUserId();
     }
+
+    @Override
+    public void removeAll() {
+        userRepository.deleteAll();
+    }
 }

@@ -5,14 +5,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Route {
     private Long routeId;
     private Long ownerId;
     private Localization from;
+    private List<Localization> stops;
     private Localization to;
-    private Date departureTime;
     private Integer numberOfSeats;
     private Integer numberOfOccupiedSeats;
     private Double price;
@@ -54,15 +55,6 @@ public class Route {
         this.numberOfSeats = numberOfSeats;
     }
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Configuration.DATA_PATTERN)
-    public Date getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(Date departureTime) {
-        this.departureTime = departureTime;
-    }
-
     public Long getOwnerId() {
         return ownerId;
     }
@@ -85,5 +77,18 @@ public class Route {
 
     public void setNumberOfOccupiedSeats(Integer numberOfOccupiedSeats) {
         this.numberOfOccupiedSeats = numberOfOccupiedSeats;
+    }
+
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    public List<Localization> getStops() {
+        return stops;
+    }
+
+    public void setStops(List<Localization> stops) {
+        this.stops = stops;
     }
 }
