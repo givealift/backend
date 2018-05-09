@@ -112,7 +112,9 @@ public class UserController {
 
     @GetMapping(value = "/user/{id}")
     public ResponseEntity<GalUserResponse> list(@PathVariable("id") long id) {
-        return new ResponseEntity<>(new GalUserResponse(userService.getUserById(id)), HttpStatus.OK);
+
+        return userService.getUserById(id).map(u -> new ResponseEntity<>(new GalUserResponse(u), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @RequestMapping(value = "/facebook/url", method = RequestMethod.GET)

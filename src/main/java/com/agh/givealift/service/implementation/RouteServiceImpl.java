@@ -31,8 +31,6 @@ public class RouteServiceImpl implements RouteService {
     private static final COD cod = CODFactory.get();
     private final RouteRepository routeRepository;
     private final CityService cityService;
-
-//    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
@@ -79,20 +77,15 @@ public class RouteServiceImpl implements RouteService {
 
         cod.i("ROUTE search result", result);
 
-//        return result.stream()
-//                .map(r -> new RouteResponseBuilder(r).withGalUser(userRepository.getOne(r.getOwnerId())).build())
-//                .collect(Collectors.toList());
         return result.stream()
-                .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserById(r.getOwnerId())).build())
+                .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserPublicInfo(r.getOwnerId())).build())
                 .collect(Collectors.toList());
 //        return null;
     }
 
     public Optional<RouteResponse> get(long id) {
-//        return Optional.ofNullable(routeRepository.findByRouteId(id))
-//                .map(r -> new RouteResponseBuilder(r).withGalUser(userRepository.getOne(r.getOwnerId())).build());
         return Optional.ofNullable(routeRepository.findByRouteId(id))
-                .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserById(r.getOwnerId())).build());
+                .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserPublicInfo(r.getOwnerId())).build());
 
 //        return null;
     }

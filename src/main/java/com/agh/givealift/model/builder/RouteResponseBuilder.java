@@ -6,20 +6,20 @@ import com.agh.givealift.model.response.GalUserPublicResponse;
 import com.agh.givealift.model.response.RouteResponse;
 
 public class RouteResponseBuilder {
-    private GalUser galUser;
+    private GalUserPublicResponse galUser;
     private Route route;
 
     public RouteResponseBuilder(Route route) {
         this.route = route;
     }
 
-    public RouteResponseBuilder withGalUser(GalUser galUser) {
+    public RouteResponseBuilder withGalUser(GalUserPublicResponse galUser) {
         this.galUser = galUser;
         return this;
     }
 
     public RouteResponse build() {
-        return getRouteResponse(getGalUserPublicResponse());
+        return getRouteResponse(galUser);
     }
 
     private RouteResponse getRouteResponse(GalUserPublicResponse user) {
@@ -33,15 +33,5 @@ public class RouteResponseBuilder {
         rr.setStops(route.getStops());
         rr.setTo(route.getTo());
         return rr;
-    }
-
-    private GalUserPublicResponse getGalUserPublicResponse() {
-        GalUserPublicResponse user = new GalUserPublicResponse(galUser);
-//        user.setEmail(galUser.getEmail());
-//        user.setFirstName(galUser.getFirstName());
-//        user.setLastName(galUser.getLastName());
-//        user.setGender(galUser.getGender());
-//        user.setPhone(galUser.getPhone());
-        return user;
     }
 }
