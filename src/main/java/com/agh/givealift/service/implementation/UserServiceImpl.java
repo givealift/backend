@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,18 +48,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.getOne(id).getPhoto();
     }
 
-    @PreAuthorize("denyAll()")
+    @PreAuthorize("permitAll()")
     public GalUserPublicResponse getUserPublicInfo(long id) {
         return new GalUserPublicResponse(userRepository.getOne(id));
     }
 
     @PreAuthorize("#id==principal.user.galUserId")
-    public GalUser getUserById(long id) {
-        return userRepository.getOne(id);
+    public Optional<GalUser> getUserById(long id) {
+        return userRepository.findById(id);
     }
 
-
-    @PreAuthorize("hasRole(ROLE_ADMIN)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<GalUser> list() {
         return userRepository.findAll();
     }
