@@ -3,6 +3,7 @@ package com.agh.givealift.controller;
 import com.agh.givealift.Configuration;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
+import com.agh.givealift.model.response.RouteResponse;
 import com.agh.givealift.service.RouteService;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
@@ -78,8 +79,8 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Route> get(@PathVariable("id") long id) {
-        Optional<Route> optionalRoute = routeService.get(id);
+    public ResponseEntity<RouteResponse> get(@PathVariable("id") long id) {
+        Optional<RouteResponse> optionalRoute = routeService.get(id);
         return optionalRoute
                 .map(route -> new ResponseEntity<>(route, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_GATEWAY));
@@ -87,7 +88,7 @@ public class RouteController {
 
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Route>> search(
+    public ResponseEntity<List<RouteResponse>> search(
             @RequestParam Long from,
             @RequestParam Long to,
             @RequestParam @DateTimeFormat(pattern = Configuration.DATE_SEARCH_PATTERN) Date date

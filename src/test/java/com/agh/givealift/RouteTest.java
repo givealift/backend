@@ -3,30 +3,24 @@ package com.agh.givealift;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
+import com.agh.givealift.model.response.RouteResponse;
 import com.agh.givealift.service.CityService;
 import com.agh.givealift.service.RouteService;
 import com.agh.givealift.service.UserService;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import com.stefanik.cod.controller.CODGlobal;
-import org.hibernate.Hibernate;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -75,8 +69,7 @@ public class RouteTest {
             Localization from = new Localization();
             from.setCity(cities.get(0));
             cFromId = cities.get(0).getCityId();
-            from.setStreet("s1");
-            from.setBuildingNumber(1);
+            from.setPlaceOfMeeting("s1 1");
             from.setDate(dateFormat.parse("08.05.2018 21:15:00"));
             r.setFrom(from);
 
@@ -84,15 +77,13 @@ public class RouteTest {
             Localization s1 = new Localization();
             s1.setCity(cities.get(1));
             cStopsId.add(cities.get(1).getCityId());
-            s1.setStreet("s2");
-            s1.setBuildingNumber(2);
+            s1.setPlaceOfMeeting("s2 2");
             s1.setDate(dateFormat.parse("08.05.2018 22:45:00"));
 
             Localization s2 = new Localization();
             s2.setCity(cities.get(2));
             cStopsId.add(cities.get(2).getCityId());
-            s2.setStreet("s3");
-            s2.setBuildingNumber(3);
+            s2.setPlaceOfMeeting("s3 3");
             s2.setDate(dateFormat.parse("08.05.2018 22:55:00"));
 
             r.setStops(Arrays.asList(s1, s2));
@@ -100,8 +91,7 @@ public class RouteTest {
             Localization to = new Localization();
             to.setCity(cities.get(3));
             cToId = cities.get(3).getCityId();
-            to.setStreet("s4");
-            to.setBuildingNumber(4);
+            to.setPlaceOfMeeting("s4 4");
             to.setDate(dateFormat.parse("08.05.2018 23:15:00"));
             r.setTo(to);
 
@@ -115,7 +105,7 @@ public class RouteTest {
     @Test
     public void routeSearchFromToTest01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cFromId,
                 cToId,
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -128,7 +118,7 @@ public class RouteTest {
     @Test
     public void routeSearchFromStopTest01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cFromId,
                 cStopsId.get(0),
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -140,7 +130,7 @@ public class RouteTest {
     @Test
     public void routeSearchFromStopTest02() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cFromId,
                 cStopsId.get(1),
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -152,7 +142,7 @@ public class RouteTest {
     @Test
     public void routeSearchStopToTest01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cStopsId.get(0),
                 cToId,
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -164,7 +154,7 @@ public class RouteTest {
     @Test
     public void routeSearchStopToTest02() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cStopsId.get(1),
                 cToId,
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -176,7 +166,7 @@ public class RouteTest {
     @Test
     public void routeSearchStopStopTest01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cStopsId.get(0),
                 cStopsId.get(1),
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -188,7 +178,7 @@ public class RouteTest {
     @Test
     public void routeSearchToFromReverse01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cToId,
                 cFromId,
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -200,7 +190,7 @@ public class RouteTest {
     @Test
     public void routeSearchToStopReverse01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cToId,
                 cStopsId.get(0),
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -212,7 +202,7 @@ public class RouteTest {
     @Test
     public void routeSearchToStopReverse02() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cToId,
                 cStopsId.get(1),
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -224,7 +214,7 @@ public class RouteTest {
     @Test
     public void routeSearchStopFromReverse01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cStopsId.get(1),
                 cFromId,
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -236,7 +226,7 @@ public class RouteTest {
     @Test
     public void routeSearchStopFromReverse02() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cStopsId.get(0),
                 cFromId,
                 dateFormat.parse("08.05.2018 05:00:00")
@@ -248,7 +238,7 @@ public class RouteTest {
     @Test
     public void routeSearchStopStopReverse01() throws ParseException {
         CODGlobal.setImmersionLevel(5);
-        List<Route> result = routeService.search(
+        List<RouteResponse> result = routeService.search(
                 cStopsId.get(1),
                 cStopsId.get(0),
                 dateFormat.parse("08.05.2018 05:00:00")

@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @PreAuthorize("hasRole(ROLE_ADMIN)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<GalUser> list() {
         return userRepository.findAll();
     }

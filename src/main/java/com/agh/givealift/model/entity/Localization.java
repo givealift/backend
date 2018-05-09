@@ -10,8 +10,8 @@ import java.util.Date;
 public class Localization {
     private Long localizationId;
     private City city;
-    private String street;
-    private Integer buildingNumber;
+    private String placeOfMeeting;
+//    private Integer buildingNumber;
     private Date date;
 
     @Id
@@ -33,21 +33,21 @@ public class Localization {
         this.city = city;
     }
 
-    public String getStreet() {
-        return street;
+    public String getPlaceOfMeeting() {
+        return placeOfMeeting;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setPlaceOfMeeting(String placeOfMeeting) {
+        this.placeOfMeeting = placeOfMeeting;
     }
 
-    public Integer getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(Integer buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
+//    public Integer getBuildingNumber() {
+//        return buildingNumber;
+//    }
+//
+//    public void setBuildingNumber(Integer buildingNumber) {
+//        this.buildingNumber = buildingNumber;
+//    }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Configuration.DATA_PATTERN)
     public Date getDate() {
