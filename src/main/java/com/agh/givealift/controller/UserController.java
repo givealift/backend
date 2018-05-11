@@ -101,7 +101,12 @@ public class UserController {
 
     @GetMapping(value = "/user/route/{id}")
     public ResponseEntity<List<Route>> getRoutes(@PathVariable("id") long id, @RequestParam("page") int page) throws IOException {
-        return new ResponseEntity<>(routeService.userRoute(id, new PageRequest(page, 10)), HttpStatus.OK);
+        return new ResponseEntity<>(routeService.userRoute(id, PageRequest.of(page, 10)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user/count/route/{id}")
+    public ResponseEntity<Integer> getRoutes(@PathVariable("id") long id) {
+        return new ResponseEntity<>(routeService.countUserRoute(id), HttpStatus.OK);
     }
 
 

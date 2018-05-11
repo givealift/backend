@@ -1,13 +1,11 @@
 package com.agh.givealift.repository;
 
-import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Route;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 
 import java.util.Date;
 import java.util.List;
@@ -59,4 +57,6 @@ public interface RouteRepository extends JpaRepository<Route, String> {
     Route findByRouteId(Long id);
 
     List<Route> findByOwnerId(long id, Pageable pageable);
+
+    Integer countByOwnerId(long id);
 }

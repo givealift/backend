@@ -145,4 +145,9 @@ public class RouteServiceImpl implements RouteService {
     public void removeAll() {
         routeRepository.deleteAll();
     }
+
+
+    public Integer countUserRoute(long id) {
+        return routeRepository.countByOwnerId(id);
+    }
 }
