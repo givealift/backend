@@ -40,7 +40,8 @@ dependencies {
 
     compile "io.springfox:springfox-swagger2:2.6.1"
     compile "io.springfox:springfox-swagger-ui:2.6.1"
-
+    compile 'org.springframework.boot:spring-boot-starter-mail:2.0.1.RELEASE'
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.0'
     runtime('org.postgresql:postgresql')
     runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
 

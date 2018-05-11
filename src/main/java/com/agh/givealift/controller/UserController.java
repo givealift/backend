@@ -4,6 +4,7 @@ import com.agh.givealift.exceptions.FacebookAccessException;
 import com.agh.givealift.model.AuthToken;
 import com.agh.givealift.model.entity.GalUser;
 import com.agh.givealift.model.entity.Route;
+import com.agh.givealift.model.enums.EmailTemplate;
 import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.AuthenticationResponse;
@@ -12,6 +13,7 @@ import com.agh.givealift.security.JwtTokenUtil;
 import com.agh.givealift.service.FacebookService;
 import com.agh.givealift.service.RouteService;
 import com.agh.givealift.service.UserService;
+import com.agh.givealift.service.implementation.EmailService;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +42,17 @@ public class UserController {
     private final UserService userService;
     private final FacebookService facebookService;
     private final RouteService routeService;
+    private final EmailService emailService;
+
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService,
-                          RouteService routeService) {
+    public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService, RouteService routeService, EmailService emailService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
         this.facebookService = facebookService;
         this.routeService = routeService;
+        this.emailService = emailService;
     }
 
     @PostMapping(value = "/authenticate")
@@ -68,8 +72,9 @@ public class UserController {
 
 
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
-    public ResponseEntity<?> signUp(@RequestBody SignUpUserRequest signUpUserRequest) {
+    public ResponseEntity<Long> signUp(@RequestBody SignUpUserRequest signUpUserRequest) {
         cod.i(signUpUserRequest);
+        emailService.sendMessage(signUpUserRequest.getEmail(), EmailTemplate.USER_SIGN_UP.getSubject(), EmailTemplate.USER_SIGN_UP.getText());
         return new ResponseEntity<>(userService.signUp(signUpUserRequest), HttpStatus.CREATED);
     }
 
@@ -101,7 +106,12 @@ public class UserController {
 
     @GetMapping(value = "/user/route/{id}")
     public ResponseEntity<List<Route>> getRoutes(@PathVariable("id") long id, @RequestParam("page") int page) throws IOException {
-        return new ResponseEntity<>(routeService.userRoute(id, new PageRequest(page, 10)), HttpStatus.OK);
+        return new ResponseEntity<>(routeService.userRoute(id, PageRequest.of(page, 10)), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/user/rate/{id}")
+    public ResponseEntity<Double> rateUsser(@PathVariable("id") long id, Integer rate) throws IOException {
+        return new ResponseEntity<>(userService.changeRate(rate, id), HttpStatus.OK);
     }
 
 

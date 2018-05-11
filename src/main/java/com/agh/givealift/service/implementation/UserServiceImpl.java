@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
         GalUser newUser = new GalUser();
         signUpUserRequest.mapToGalUserWithoutPassword(newUser);
         newUser.setPassword(passwordEncoder.encode(signUpUserRequest.getPassword()));
+        newUser.setRateAmount(0L);
         newUser.setRole("USER");
         return userRepository.save(newUser).getGalUserId();
     }
@@ -86,8 +87,25 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user).getGalUserId();
     }
 
-    @Override
+
     public void removeAll() {
         userRepository.deleteAll();
+    }
+
+    // @PreAuthorize("isAuthenticated()")
+    public Double changeRate(Integer rate, long id) {
+        GalUser user = userRepository.getOne(id);
+        double newRate;
+        if (user.getRateAmount() == 0) {
+            user.setRate((double) rate);
+            user.setRateAmount(1L);
+            newRate = rate;
+        } else {
+            newRate = ((user.getRate() * user.getRateAmount()) + rate) / (user.getRateAmount() + 1);
+            user.setRate((newRate));
+            user.setRateAmount(user.getRateAmount() + 1);
+        }
+        userRepository.save(user);
+        return newRate;
     }
 }
