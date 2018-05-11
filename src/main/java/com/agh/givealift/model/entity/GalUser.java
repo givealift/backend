@@ -22,24 +22,30 @@ public class GalUser {
     @Email
     private String email;
     private String lastName;
+    private Integer birthYear;
+    private String address;
     private String phone;
+    private Double rate;
+    private Long rateAmount;
     private String gender;
     private String role;
     @Lob
     private byte[] photo;
 
+
     public GalUser() {
     }
 
-    public GalUser(String password, String facebookId, String firstName, String lastName, String email, String phone, String gender) {
+    public GalUser(String password, String firstName, String lastName, String email, String phone, String gender, Integer birthYear, String address) {
 
         this.password = password;
-        this.facebookId = facebookId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.gender = gender;
+        this.birthYear = birthYear;
+        this.address = address;
     }
 
     public Long getGalUserId() {
@@ -122,6 +128,30 @@ public class GalUser {
         this.photo = photo;
     }
 
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Integer birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "GalUser{" +
@@ -134,5 +164,13 @@ public class GalUser {
                 ", phone='" + phone + '\'' +
                 ", gender='" + gender + '\'' +
                 '}';
+    }
+
+    public Long getRateAmount() {
+        return rateAmount;
+    }
+
+    public void setRateAmount(Long rateAmount) {
+        this.rateAmount = rateAmount;
     }
 }

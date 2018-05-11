@@ -12,6 +12,9 @@ public class SignUpUserRequest {
     private String email;
     private String phone;
     private String gender;
+    private Integer birthYear;
+    private String address;
+    private Double rate;
 
     public GalUser mapToGalUserWithoutPassword(GalUser user) {
         user.setFirstName(firstName);
@@ -19,6 +22,8 @@ public class SignUpUserRequest {
         user.setEmail(email);
         user.setPhone(phone);
         user.setGender(gender);
+        user.setAddress(address);
+        user.setBirthYear(birthYear);
 
         return user;
     }
@@ -70,5 +75,29 @@ public class SignUpUserRequest {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Integer birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 }

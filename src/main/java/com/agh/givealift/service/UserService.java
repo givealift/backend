@@ -28,4 +28,6 @@ public interface UserService {
     long editUserPassword(String password, long id);
 
     void removeAll();
+
+    Double changeRate(Integer rate, long id);
 }

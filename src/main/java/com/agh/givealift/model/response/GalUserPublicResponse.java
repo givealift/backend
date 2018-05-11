@@ -8,6 +8,9 @@ public class GalUserPublicResponse {
     private String email;
     private String phone;
     private String gender;
+    public Double rate;
+    private Integer birthYear;
+
 
     public GalUserPublicResponse() {
     }
@@ -18,6 +21,8 @@ public class GalUserPublicResponse {
         this.email = galUser.getEmail();
         this.phone = galUser.getPhone();
         this.gender = galUser.getGender();
+        this.rate = galUser.getRate();
+        this.birthYear = galUser.getBirthYear();
     }
 
     public String getFirstName() {
@@ -58,5 +63,21 @@ public class GalUserPublicResponse {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Integer birthYear) {
+        this.birthYear = birthYear;
     }
 }
