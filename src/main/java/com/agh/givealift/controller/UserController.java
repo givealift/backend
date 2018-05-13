@@ -5,15 +5,18 @@ import com.agh.givealift.model.AuthToken;
 import com.agh.givealift.model.entity.GalUser;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.enums.EmailTemplate;
+import com.agh.givealift.model.enums.ResetTokenEnum;
 import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.AuthenticationResponse;
 import com.agh.givealift.model.response.GalUserResponse;
 import com.agh.givealift.security.JwtTokenUtil;
 import com.agh.givealift.service.FacebookService;
+import com.agh.givealift.service.PasswordResetService;
 import com.agh.givealift.service.RouteService;
 import com.agh.givealift.service.UserService;
 import com.agh.givealift.service.implementation.EmailService;
+import com.agh.givealift.util.ResetTokenExpirationException;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +27,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -43,16 +49,19 @@ public class UserController {
     private final FacebookService facebookService;
     private final RouteService routeService;
     private final EmailService emailService;
+    private final PasswordResetService passwordResetService;
+
 
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService, RouteService routeService, EmailService emailService) {
+    public UserController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService, FacebookService facebookService, RouteService routeService, EmailService emailService, PasswordResetService passwordResetService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
         this.facebookService = facebookService;
         this.routeService = routeService;
         this.emailService = emailService;
+        this.passwordResetService = passwordResetService;
     }
 
     @PostMapping(value = "/authenticate")
@@ -94,8 +103,43 @@ public class UserController {
         return new ResponseEntity<>(userService.saveUserPhoto(id, file), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/user/edit/password/{id}")
-    public ResponseEntity<?> editPassword(@PathVariable("id") long id, @RequestBody String password) {
+    @PostMapping(value = "/user/send-reset-email/{id}")
+    public ResponseEntity<?> photoUser(@PathVariable("id") long id, HttpServletRequest request) {
+        GalUser user = userService.getUserById(id).orElseThrow(() -> new UsernameNotFoundException(id + " not found"));
+
+        String token = UUID.randomUUID().toString();
+        passwordResetService.createEmailResetPassToken(user, token);
+        String url = request.getContextPath() + "api/user/change/password?id=" +
+                user.getGalUserId() + "&token=" + token;
+        emailService.sendMessage
+                (user.getEmail(), EmailTemplate.PASSWORD_RESET.getSubject(), EmailTemplate.PASSWORD_RESET.getText() + "  " + url);
+
+        return new ResponseEntity<>(user.getEmail(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user/change/password")
+    public ResponseEntity<String> changePasswordPage(@RequestParam("id") long id, @RequestParam("token") String token) {
+        String newToken;
+        try {
+            newToken = passwordResetService.createPasswordResetToken(id, token);
+        } catch (IllegalStateException _) {
+            return new ResponseEntity<>("Wrong user or state", HttpStatus.BAD_REQUEST);
+        } catch (ResetTokenExpirationException _) {
+            return new ResponseEntity<>("Token Expired", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(newToken, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/user/edit/password")
+    public ResponseEntity<?> editPassword(@RequestParam("id") long id, @RequestParam("token") String token, @RequestBody String password) {
+        try {
+            passwordResetService.validateResetPasswordToken(id, token, ResetTokenEnum.PASSWORD_RESET_ENABLED);
+        } catch (IllegalStateException _) {
+            return new ResponseEntity<>("Wrong user or state", HttpStatus.BAD_REQUEST);
+        } catch (ResetTokenExpirationException _) {
+            return new ResponseEntity<>("Token Expired", HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<>(userService.editUserPassword(password, id), HttpStatus.CREATED);
     }
 
