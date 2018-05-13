@@ -19,7 +19,7 @@ public class EmailConfiguration {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
         mailSender.setUsername("givealiftapp@gmail.com");
-        mailSender.setPassword(password);
+        mailSender.setPassword(System.getenv("mail.password"));
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
