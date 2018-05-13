@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         return new GalUserPublicResponse(userRepository.getOne(id));
     }
 
-    @PreAuthorize("#id==principal.user.galUserId")
+    //  @PreAuthorize("#id==principal.user.galUserId")
     public Optional<GalUser> getUserById(long id) {
         return userRepository.findById(id);
     }
@@ -73,14 +73,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(newUser).getGalUserId();
     }
 
-    @PreAuthorize("#id==principal.user.galUserId")
+    //  @PreAuthorize("#id==principal.user.galUserId")
     public Long editUser(SignUpUserRequest signUpUserRequest, long id) {
         GalUser user = userRepository.getOne(id);
         signUpUserRequest.mapToGalUserWithoutPassword(user);
         return userRepository.save(user).getGalUserId();
     }
 
-    @PreAuthorize("#id==principal.user.galUserId")
+    // @PreAuthorize("#id==principal.user.galUserId")
     public long editUserPassword(String password, long id) {
         GalUser user = userRepository.getOne(id);
         user.setPassword(passwordEncoder.encode(password));
