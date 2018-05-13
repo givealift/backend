@@ -6,6 +6,8 @@ import java.util.List;
 public class Configuration {
     public static final Integer SEARCH_BEFORE_HOURS = 0;
     public static final Integer SEARCH_AFTER_HOURS = 24;
+    public static final String BOT_NOTIFY_URL = "http://bot.heroku.com/notify";
+//    public static final String BOT_NOTIFY_URL = "http://localhost:8080/api/route/test";
 
 
     public static final String DATE_SEARCH_PATTERN = "yyyy-MM-dd" ;

@@ -4,6 +4,7 @@ import com.agh.givealift.Configuration;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.response.RouteResponse;
+import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.service.RouteService;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
@@ -37,27 +38,12 @@ public class RouteController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<List<Route>> add(@RequestBody Route route, UriComponentsBuilder ucBuilder) {
         //TODO  VALIDATION
-        cod.i(
-                " f: " + route.getFrom().getDate() +
-                        " | s0: " + route.getStops().get(0).getDate() +
-                        " | s1: " + route.getStops().get(1).getDate() +
-                        " | t: " + route.getTo().getDate(),
-                route
-        );
         //WTF SPRING?!
         route.getFrom().setDate(Date.from(route.getFrom().getDate().toInstant().minus(Duration.ofHours(2))));
         route.getTo().setDate(Date.from(route.getTo().getDate().toInstant().minus(Duration.ofHours(2))));
         for (Localization s : route.getStops()) {
             s.setDate(Date.from(s.getDate().toInstant().minus(Duration.ofHours(2))));
         }
-
-        cod.i(
-                " f: " + route.getFrom().getDate() +
-                        " | s0: " + route.getStops().get(0).getDate() +
-                        " | s1: " + route.getStops().get(1).getDate() +
-                        " | t: " + route.getTo().getDate(),
-                route
-        );
 
         if (routeService.add(route).isPresent()) {
             HttpHeaders headers = new HttpHeaders();
@@ -103,19 +89,12 @@ public class RouteController {
         return new ResponseEntity<>(routeService.getAll(), HttpStatus.OK);
     }
 
-    //
-//    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-//    public ResponseEntity<Route> update(
-//            @PathVariable("id") long id,
-//            @RequestBody Route route,
-//            UriComponentsBuilder ucBuilder
+//    @RequestMapping(value = "/test", method = RequestMethod.POST)
+//    public ResponseEntity<Route> test(
+//            @RequestBody List<SubscriptionResponse> sr
 //    ) {
-//        //TODO  VALIDATION
-//        route = routeService.update(id, route);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setLocation(ucBuilder.path("/api/route/{id}").buildAndExpand(route.getRouteId()).toUri());
-//        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+//        cod.i(sr);
+//        return new ResponseEntity<>(HttpStatus.OK);
 //    }
 
 }

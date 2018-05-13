@@ -55,6 +55,7 @@ public class CityService {
         for (int i = 0; (i < v.size() && i < limit); i++) {
             List<Object> x = v.get(i);
             City c = new City();
+            c.setCityId((long) i+1);
             c.setName((String) x.get(0));
             c.setCountry((String) x.get(1));
             c.setProvince((String) x.get(2));

@@ -10,6 +10,7 @@ import com.agh.givealift.model.response.RouteResponse;
 import com.agh.givealift.repository.RouteRepository;
 import com.agh.givealift.service.CityService;
 import com.agh.givealift.service.RouteService;
+import com.agh.givealift.service.SubscriptionService;
 import com.agh.givealift.service.UserService;
 import com.agh.givealift.util.UnknownCityException;
 import com.stefanik.cod.controller.COD;
@@ -32,12 +33,19 @@ public class RouteServiceImpl implements RouteService {
     private final RouteRepository routeRepository;
     private final CityService cityService;
     private final UserService userService;
+    private final SubscriptionService subscriptionService;
 
     @Autowired
-    public RouteServiceImpl(RouteRepository routeRepository, CityService cityService, UserService userService) {
+    public RouteServiceImpl(
+            RouteRepository routeRepository,
+            CityService cityService,
+            UserService userService,
+            SubscriptionService subscriptionService
+    ) {
         this.routeRepository = routeRepository;
         this.cityService = cityService;
         this.userService = userService;
+        this.subscriptionService = subscriptionService;
         CODGlobal.setImmersionLevel(4);
     }
 
@@ -55,6 +63,7 @@ public class RouteServiceImpl implements RouteService {
 
             route = routeRepository.save(route);
             cod.i("ADDED ROUTE: ", route);
+            subscriptionService.checkAndNotify(route);
             return Optional.of(route);
         }
         return Optional.empty();

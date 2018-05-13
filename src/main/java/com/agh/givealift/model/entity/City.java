@@ -13,7 +13,7 @@ public class City {
     private CityInfo cityInfo;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getCityId() {
         return cityId;
     }
