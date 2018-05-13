@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +37,7 @@ public class RouteController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<List<Route>> add(@RequestBody Route route, UriComponentsBuilder ucBuilder) {
         //TODO  VALIDATION
+
         //WTF SPRING?!
         route.getFrom().setDate(Date.from(route.getFrom().getDate().toInstant().minus(Duration.ofHours(2))));
         route.getTo().setDate(Date.from(route.getTo().getDate().toInstant().minus(Duration.ofHours(2))));
