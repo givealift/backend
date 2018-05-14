@@ -17,6 +17,7 @@ public class Route {
     private Integer numberOfSeats;
     private Integer numberOfOccupiedSeats;
     private Double price;
+    private List<Long> passengers;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -90,5 +91,13 @@ public class Route {
 
     public void setStops(List<Localization> stops) {
         this.stops = stops;
+    }
+
+    public List<Long> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(List<Long> passengers) {
+        this.passengers = passengers;
     }
 }

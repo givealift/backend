@@ -6,6 +6,8 @@ import com.agh.givealift.model.builder.RouteResponseBuilder;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
+import com.agh.givealift.model.request.NewPassengerRequest;
+import com.agh.givealift.model.response.GalUserPublicResponse;
 import com.agh.givealift.model.response.RouteResponse;
 import com.agh.givealift.repository.RouteRepository;
 import com.agh.givealift.service.CityService;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +63,7 @@ public class RouteServiceImpl implements RouteService {
         if (fromCity.isPresent() && toCity.isPresent()) {
             route.getFrom().setCity(fromCity.get());
             route.getTo().setCity(toCity.get());
+            route.setPassengers(new ArrayList<>());
 
             route = routeRepository.save(route);
             cod.i("ADDED ROUTE: ", route);
@@ -158,5 +162,20 @@ public class RouteServiceImpl implements RouteService {
 
     public Integer countUserRoute(long id) {
         return routeRepository.countByOwnerId(id);
+    }
+
+    @Override
+    public Optional<Route> addPassenger(long routeId, NewPassengerRequest newPassenger) {
+        Route nullableRoute = routeRepository.findByRouteId(routeId);
+        if (nullableRoute != null && userService.getUserPublicInfo(newPassenger.getPassengerId()) != null) {
+            if (nullableRoute.getNumberOfSeats() > nullableRoute.getNumberOfOccupiedSeats()) {
+                nullableRoute.setNumberOfOccupiedSeats(nullableRoute.getNumberOfOccupiedSeats() + 1);
+                nullableRoute.getPassengers().add(newPassenger.getPassengerId());
+                Route route = routeRepository.save(nullableRoute);
+                cod.i("ADD PASSENGER", route);
+                return Optional.of(route);
+            }
+        }
+        return Optional.empty();
     }
 }
