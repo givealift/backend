@@ -4,6 +4,7 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.Date;
 
 @Entity
 public class GalUser {
@@ -22,7 +23,7 @@ public class GalUser {
     @Email
     private String email;
     private String lastName;
-    private Integer birthYear;
+    private Date birthDate;
     private String address;
     private String phone;
     private Double rate;
@@ -36,7 +37,7 @@ public class GalUser {
     public GalUser() {
     }
 
-    public GalUser(String password, String firstName, String lastName, String email, String phone, String gender, Integer birthYear, String address) {
+    public GalUser(String password, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String address) {
 
         this.password = password;
         this.firstName = firstName;
@@ -44,7 +45,7 @@ public class GalUser {
         this.email = email;
         this.phone = phone;
         this.gender = gender;
-        this.birthYear = birthYear;
+        this.birthDate = birthDate;
         this.address = address;
     }
 
@@ -128,12 +129,12 @@ public class GalUser {
         this.photo = photo;
     }
 
-    public Integer getBirthYear() {
-        return birthYear;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthYear(Integer birthYear) {
-        this.birthYear = birthYear;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getAddress() {

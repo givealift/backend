@@ -2,6 +2,8 @@ package com.agh.givealift.model.response;
 
 import com.agh.givealift.model.entity.GalUser;
 
+import java.util.Date;
+
 public class GalUserResponse {
 
     private String firstName;
@@ -9,7 +11,7 @@ public class GalUserResponse {
     private String email;
     private String phone;
     private String gender;
-    private Integer birthYear;
+    private Date birthYear;
     private String address;
     private Double rate;
     ;
@@ -21,7 +23,7 @@ public class GalUserResponse {
         this.phone = galUser.getPhone();
         this.gender = galUser.getGender();
         this.address = galUser.getAddress();
-        this.birthYear = galUser.getBirthYear();
+        this.birthYear = galUser.getBirthDate();
         this.rate = galUser.getRate();
     }
 
@@ -64,11 +66,11 @@ public class GalUserResponse {
         return gender;
     }
 
-    public Integer getBirthYear() {
+    public Date getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(Integer birthYear) {
+    public void setBirthYear(Date birthYear) {
         this.birthYear = birthYear;
     }
 

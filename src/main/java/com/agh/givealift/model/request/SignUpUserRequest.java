@@ -2,6 +2,8 @@ package com.agh.givealift.model.request;
 
 import com.agh.givealift.model.entity.GalUser;
 
+import java.util.Date;
+
 
 public class SignUpUserRequest {
 
@@ -12,7 +14,7 @@ public class SignUpUserRequest {
     private String email;
     private String phone;
     private String gender;
-    private Integer birthYear;
+    private Date birthYear;
     private String address;
     private Double rate;
 
@@ -23,7 +25,7 @@ public class SignUpUserRequest {
         user.setPhone(phone);
         user.setGender(gender);
         user.setAddress(address);
-        user.setBirthYear(birthYear);
+        user.setBirthDate(birthYear);
 
         return user;
     }
@@ -77,11 +79,11 @@ public class SignUpUserRequest {
         this.gender = gender;
     }
 
-    public Integer getBirthYear() {
+    public Date getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(Integer birthYear) {
+    public void setBirthYear(Date birthYear) {
         this.birthYear = birthYear;
     }
 
