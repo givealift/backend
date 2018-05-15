@@ -4,13 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Configuration {
-    public static final Integer SEARCH_BEFORE_HOURS = 0;
-    public static final Integer SEARCH_AFTER_HOURS = 24;
-    public static final String BOT_NOTIFY_URL = "http://bot.heroku.com/notify";
+    public static final Integer SEARCH_BEFORE_SEC = 0;
+    public static final Integer SEARCH_AFTER_SEC = 24 * 60 * 60; // 23:59:59
+    public static final long HOURS_DIFFERENCE = 2;
+    public static final String BOT_NOTIFY_URL = "https://givealift-bot.herokuapp.com/notify";
 //    public static final String BOT_NOTIFY_URL = "http://localhost:8080/api/route/test";
 
+//    public static final int BOT_NOTIFY_TIMEOUT_SEC = 5;
 
-    public static final String DATE_SEARCH_PATTERN = "yyyy-MM-dd" ;
+    public static final String DATE_SEARCH_PATTERN = "yyyy-MM-dd";
     public static final String DATA_PATTERN = "yyyy-MM-dd HH:mm";
 
     public static final List<List<Object>> TMP_CITIES_LIST = Arrays.asList(

@@ -2,6 +2,7 @@ package com.agh.givealift.service;
 
 
 import com.agh.givealift.model.entity.Route;
+import com.agh.givealift.model.request.NewPassengerRequest;
 import com.agh.givealift.model.response.RouteResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,4 +29,6 @@ public interface RouteService {
     void removeAll();
 
     Integer countUserRoute(long id);
+
+    Optional<Route> addPassenger(long routeId, NewPassengerRequest newPassenger);
 }

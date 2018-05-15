@@ -24,7 +24,7 @@ public class CityService {
     }
 
     public List<City> list() {
-        return cityRepository.findAll();
+        return cityRepository.findAllByOrderByCityId();
     }
 
     public void saveAll(List<City> cities) {

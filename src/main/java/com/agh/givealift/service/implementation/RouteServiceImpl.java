@@ -6,6 +6,7 @@ import com.agh.givealift.model.builder.RouteResponseBuilder;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
+import com.agh.givealift.model.request.NewPassengerRequest;
 import com.agh.givealift.model.response.RouteResponse;
 import com.agh.givealift.repository.RouteRepository;
 import com.agh.givealift.service.CityService;
@@ -20,11 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +46,7 @@ public class RouteServiceImpl implements RouteService {
         this.cityService = cityService;
         this.userService = userService;
         this.subscriptionService = subscriptionService;
-        CODGlobal.setImmersionLevel(4);
+        CODGlobal.setImmersionLevel(3);
     }
 
     public List<Route> getAll() {
@@ -60,6 +60,7 @@ public class RouteServiceImpl implements RouteService {
         if (fromCity.isPresent() && toCity.isPresent()) {
             route.getFrom().setCity(fromCity.get());
             route.getTo().setCity(toCity.get());
+            route.setPassengers(new ArrayList<>());
 
             route = routeRepository.save(route);
             cod.i("ADDED ROUTE: ", route);
@@ -74,29 +75,55 @@ public class RouteServiceImpl implements RouteService {
     }
 
     public List<RouteResponse> search(Long from, Long to, Date date) {
-        Instant beforeInstant = date.toInstant().minus(Duration.ofHours(Configuration.SEARCH_BEFORE_HOURS));
-        Instant afterInstant = date.toInstant().plus(Duration.ofHours(Configuration.SEARCH_AFTER_HOURS));
-        cod.e("ROUTE search", from, to, date.toString(), Date.from(beforeInstant).toString(), Date.from(afterInstant).toString());
-        List<Route> result = routeRepository.findRoutes(
-                Date.from(beforeInstant),
-                Date.from(afterInstant),
-                from,
-                to
-        );
+        List<Route> result = Collections.emptyList();
+        try {
+            if (date.compareTo(new SimpleDateFormat(Configuration.DATE_SEARCH_PATTERN).parse("0001-01-01")) != 0) {
 
+
+                Date fromDate = Date.from(date.toInstant().minus(Duration.ofSeconds(Configuration.SEARCH_BEFORE_SEC)));
+                Date toDate = Date.from(date.toInstant().plus(Duration.ofSeconds(Configuration.SEARCH_AFTER_SEC)));
+
+                cod.i("ROUTE search: "
+                        + "\n\t| cFrom: " + from
+                        + "\n\t| cTo: " + to
+                        + "\n\t| inputDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(date)
+                        + "\n\t| fromDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(fromDate)
+                        + "\n\t| toDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(toDate)
+                        + "\n\t"
+                );
+
+                result = routeRepository.findRoutes(
+                        fromDate,
+                        toDate,
+                        from,
+                        to
+                );
+            } else {
+
+                cod.i("ROUTE search: "
+                        + "\n\t| cFrom: " + from
+                        + "\n\t| cTo: " + to
+                        + "\n\t| date: null"
+                        + "\n\t"
+                );
+                result = routeRepository.findRoutes(
+                        from,
+                        to
+                );
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         cod.i("ROUTE search result", result);
 
         return result.stream()
                 .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserPublicInfo(r.getOwnerId())).build())
                 .collect(Collectors.toList());
-//        return null;
     }
 
     public Optional<RouteResponse> get(long id) {
         return Optional.ofNullable(routeRepository.findByRouteId(id))
                 .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserPublicInfo(r.getOwnerId())).build());
-
-//        return null;
     }
 
     public Optional<Route> update(long id, Route route) {
@@ -158,5 +185,21 @@ public class RouteServiceImpl implements RouteService {
 
     public Integer countUserRoute(long id) {
         return routeRepository.countByOwnerId(id);
+    }
+
+    @Override
+    public Optional<Route> addPassenger(long routeId, NewPassengerRequest newPassenger) {
+        Route nullableRoute = routeRepository.findByRouteId(routeId);
+
+        if (nullableRoute != null && newPassenger != null && userService.getUserPublicInfo(newPassenger.getPassengerId()) != null) {
+            if (nullableRoute.getNumberOfSeats() > nullableRoute.getNumberOfOccupiedSeats()) {
+                nullableRoute.setNumberOfOccupiedSeats(nullableRoute.getNumberOfOccupiedSeats() + 1);
+                nullableRoute.getPassengers().add(newPassenger.getPassengerId());
+                Route route = routeRepository.save(nullableRoute);
+                cod.i("ADD PASSENGER", route);
+                return Optional.of(route);
+            }
+        }
+        return Optional.empty();
     }
 }

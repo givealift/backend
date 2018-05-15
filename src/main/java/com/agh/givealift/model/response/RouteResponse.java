@@ -9,12 +9,14 @@ import java.util.List;
 public class RouteResponse {
     private Long routeId;
     private GalUserPublicResponse galUserPublicResponse;
+    private String description;
     private Localization from;
     private List<Localization> stops;
     private Localization to;
     private Integer numberOfSeats;
     private Integer numberOfOccupiedSeats;
     private Double price;
+    private List<Long> passengers;
 
     public RouteResponse() {
     }
@@ -81,5 +83,21 @@ public class RouteResponse {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Long> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(List<Long> passengers) {
+        this.passengers = passengers;
     }
 }

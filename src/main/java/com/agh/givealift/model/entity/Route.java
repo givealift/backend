@@ -11,12 +11,14 @@ import java.util.List;
 public class Route {
     private Long routeId;
     private Long ownerId;
+    private String description;
     private Localization from;
     private List<Localization> stops;
     private Localization to;
     private Integer numberOfSeats;
     private Integer numberOfOccupiedSeats;
     private Double price;
+    private List<Long> passengers;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -90,5 +92,22 @@ public class Route {
 
     public void setStops(List<Localization> stops) {
         this.stops = stops;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @ElementCollection
+    public List<Long> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(List<Long> passengers) {
+        this.passengers = passengers;
     }
 }
