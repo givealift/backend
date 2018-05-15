@@ -82,7 +82,7 @@ public class UserController {
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
     public ResponseEntity<Long> signUp(@RequestBody SignUpUserRequest signUpUserRequest) {
         cod.i(signUpUserRequest);
-        emailService.sendMessage(signUpUserRequest.getEmail(), EmailTemplate.USER_SIGN_UP.getSubject(), EmailTemplate.USER_SIGN_UP.getText());
+        //  emailService.sendMessage(signUpUserRequest.getEmail(), EmailTemplate.USER_SIGN_UP.getSubject(), EmailTemplate.USER_SIGN_UP.getText());
         return new ResponseEntity<>(userService.signUp(signUpUserRequest), HttpStatus.CREATED);
     }
 
