@@ -29,7 +29,7 @@ public class GalUser {
     private Long rateAmount;
     private String gender;
     private String role;
-    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] photo;
 
 
