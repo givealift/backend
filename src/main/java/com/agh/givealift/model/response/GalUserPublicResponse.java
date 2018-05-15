@@ -5,6 +5,7 @@ import com.agh.givealift.model.entity.GalUser;
 import java.util.Date;
 
 public class GalUserPublicResponse {
+    private long userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -18,6 +19,7 @@ public class GalUserPublicResponse {
     }
 
     public GalUserPublicResponse(GalUser galUser) {
+        this.userId = galUser.getGalUserId();
         this.firstName = galUser.getFirstName();
         this.lastName = galUser.getLastName();
         this.email = galUser.getEmail();
@@ -81,5 +83,13 @@ public class GalUserPublicResponse {
 
     public void setBirthYear(Date birthYear) {
         this.birthYear = birthYear;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }
