@@ -79,7 +79,6 @@ public class UserController {
         return ResponseEntity.ok(new AuthenticationResponse(user.getGalUserId(), token));
     }
 
-
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
     public ResponseEntity<Long> signUp(@RequestBody SignUpUserRequest signUpUserRequest) {
         cod.i(signUpUserRequest);

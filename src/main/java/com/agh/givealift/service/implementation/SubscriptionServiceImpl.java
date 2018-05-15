@@ -71,6 +71,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    @Override public List<Subscription> getAll() {
+      return  subscriptionRepository.findAll();
+    }
+
     private List<SubscriptionResponse> check(Route route) throws ParseException {
 
         ArrayList<Subscription> result = new ArrayList<>();
@@ -129,4 +133,28 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return result;
 
     }
+    
+   public  SubscriptionResponse mapToSubscriptionRseponse(Subscription subscription){
+                 SubscriptionResponse response = new SubscriptionResponse();
+                    response.setSubscriber(subscription.getSubscriber());
+                    response.setEmail(subscription.getEmail());
+                    response.setDate(subscription.getDate());
+                    response.setFrom(subscription.getFrom());
+                    response.setTo(subscription.getTo());
+                    return response;
+        
+        
+    }
+
+    @Override public Long delete(String email) {
+      Optional<Subscription> subscription =   subscriptionRepository.findById(email);
+       if(subscription.isPresent()){
+           subscriptionRepository.deleteById(email);
+           return subscription.get().getSubscriptionId();
+       }
+       return null;
+       
+       
+    }
+
 }

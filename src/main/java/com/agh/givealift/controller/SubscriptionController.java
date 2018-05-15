@@ -6,10 +6,12 @@ import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.entity.Subscription;
 import com.agh.givealift.model.request.SubscriptionRequest;
 import com.agh.givealift.model.response.RouteResponse;
+import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.service.RouteService;
 import com.agh.givealift.service.SubscriptionService;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
+import com.sun.mail.util.logging.CollectorFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -23,9 +25,10 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-
-@Controller
+@RestController
 @RequestMapping("/api/subscription")
 public class SubscriptionController {
     private static final COD cod = CODFactory.get();
@@ -48,6 +51,23 @@ public class SubscriptionController {
                         }
                 )
                 .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+    
+    @GetMapping("/all")
+    public ResponseEntity<List<SubscriptionResponse>> getAllSubscription(){
+        List<SubscriptionResponse> response =  subscriptionService.getAll()
+                .stream().map(subscriptionService::mapToSubscriptionRseponse).collect(Collectors.toList());
+          return new ResponseEntity<>(response,HttpStatus.OK);               
+    }
+    
+    
+     @DeleteMapping("/{id}")
+    public ResponseEntity<?> getAllSubscription(@RequestParam("email") String email){
+                Optional<Long> subscription = Optional.ofNullable(subscriptionService.delete(email));
+              if(!subscription.isPresent()) return new ResponseEntity<>("Uzytkownik nie istnieje",HttpStatus.BAD_REQUEST);
+              return new ResponseEntity<>(subscription.get(),HttpStatus.OK);      
+        
+        
     }
 
 
