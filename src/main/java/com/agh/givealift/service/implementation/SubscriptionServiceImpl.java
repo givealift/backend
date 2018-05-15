@@ -146,10 +146,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         
     }
 
-    @Override public Long delete(String email) {
-      Optional<Subscription> subscription =   subscriptionRepository.findById(email);
+    @Override
+    public Long delete(long id) {
+        Optional<Subscription> subscription = subscriptionRepository.findById(id);
        if(subscription.isPresent()){
-           subscriptionRepository.deleteById(email);
+           subscriptionRepository.deleteById(id);
            return subscription.get().getSubscriptionId();
        }
        return null;

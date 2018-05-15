@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public byte[] getUserPhoto(long id) {
+
         return userRepository.getOne(id).getPhoto();
     }
 
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
         return new GalUserPublicResponse(userRepository.getOne(id));
     }
 
-    @PreAuthorize("#id==principal.user.galUserId")
+    // @PreAuthorize("#id==principal.user.galUserId")
     public Optional<GalUser> getUserById(long id) {
         return userRepository.findById(id);
     }
