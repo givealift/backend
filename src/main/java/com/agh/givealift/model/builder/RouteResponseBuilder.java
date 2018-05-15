@@ -25,6 +25,7 @@ public class RouteResponseBuilder {
     private RouteResponse getRouteResponse(GalUserPublicResponse user) {
         RouteResponse rr = new RouteResponse();
         rr.setRouteId(route.getRouteId());
+        rr.setDescription(route.getDescription());
         rr.setGalUserPublicResponse(user);
         rr.setPrice(route.getPrice());
         rr.setNumberOfSeats(route.getNumberOfSeats());
@@ -32,6 +33,7 @@ public class RouteResponseBuilder {
         rr.setFrom(route.getFrom());
         rr.setStops(route.getStops());
         rr.setTo(route.getTo());
+        rr.setPassengers(route.getPassengers());
         return rr;
     }
 }

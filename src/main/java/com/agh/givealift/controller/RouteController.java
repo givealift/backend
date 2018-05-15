@@ -39,10 +39,10 @@ public class RouteController {
         //TODO  VALIDATION
 
         //WTF SPRING?!
-        route.getFrom().setDate(Date.from(route.getFrom().getDate().toInstant().minus(Duration.ofHours(2))));
-        route.getTo().setDate(Date.from(route.getTo().getDate().toInstant().minus(Duration.ofHours(2))));
+        route.getFrom().setDate(Date.from(route.getFrom().getDate().toInstant().minus(Duration.ofHours(Configuration.HOURS_DIFFERENCE))));
+        route.getTo().setDate(Date.from(route.getTo().getDate().toInstant().minus(Duration.ofHours(Configuration.HOURS_DIFFERENCE))));
         for (Localization s : route.getStops()) {
-            s.setDate(Date.from(s.getDate().toInstant().minus(Duration.ofHours(2))));
+            s.setDate(Date.from(s.getDate().toInstant().minus(Duration.ofHours(Configuration.HOURS_DIFFERENCE))));
         }
 
         if (routeService.add(route).isPresent()) {
@@ -78,6 +78,7 @@ public class RouteController {
             @RequestParam Long to,
             @RequestParam @DateTimeFormat(pattern = Configuration.DATE_SEARCH_PATTERN) Date date
     ) {
+//        date = Date.from(date.toInstant().minus(Duration.ofHours(Configuration.HOURS_DIFFERENCE)));
         return new ResponseEntity<>(routeService.search(from, to, date), HttpStatus.OK);
     }
 

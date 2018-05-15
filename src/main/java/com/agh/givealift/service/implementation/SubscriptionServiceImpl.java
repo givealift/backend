@@ -87,7 +87,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             );
             Long l = t.getLeft().getCity().getCityId();
             List<Long> r = t.getRight();
-
             List<Subscription> subs = subscriptionRepository.findSubscriptions(l, r, cDate);
             cod.i(
                     l + " | " + r + " | d: " + cDate,

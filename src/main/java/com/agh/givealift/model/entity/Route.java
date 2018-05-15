@@ -11,6 +11,7 @@ import java.util.List;
 public class Route {
     private Long routeId;
     private Long ownerId;
+    private String description;
     private Localization from;
     private List<Localization> stops;
     private Localization to;
@@ -93,6 +94,15 @@ public class Route {
         this.stops = stops;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @ElementCollection
     public List<Long> getPassengers() {
         return passengers;
     }
