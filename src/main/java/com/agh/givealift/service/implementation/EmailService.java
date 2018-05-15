@@ -19,7 +19,7 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    //@PostConstruct
+
     public void sendMessage(String emailAddress, String subject, String text
     ) {
         try {

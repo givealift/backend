@@ -164,7 +164,7 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/user/public{id}")
+    @GetMapping(value = "/user/public/{id}")
     public ResponseEntity<?> getPublicInfo(@PathVariable("id") long id) {
         return new ResponseEntity<>(userService.getUserPublicInfo(id), HttpStatus.OK);
     }
