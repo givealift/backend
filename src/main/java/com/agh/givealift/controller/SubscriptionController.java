@@ -51,7 +51,7 @@ public class SubscriptionController {
     
 
      @DeleteMapping("/{id}")
-     public ResponseEntity<?> getAllSubscription(@RequestParam("id") long id) {
+     public ResponseEntity<?> getAllSubscription(@PathVariable("id") long id) {
          Optional<Long> subscription = Optional.ofNullable(subscriptionService.delete(id));
               if(!subscription.isPresent()) return new ResponseEntity<>("Uzytkownik nie istnieje",HttpStatus.BAD_REQUEST);
               return new ResponseEntity<>(subscription.get(),HttpStatus.OK);      
