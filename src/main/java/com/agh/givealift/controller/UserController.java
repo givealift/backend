@@ -74,7 +74,7 @@ public class UserController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final GalUser user = userService.getUserByUsername(loginUser.getUsername());
+        final GalUser user = userService.getUserByUsername(loginUser.getUsername()).get();
         final String token = jwtTokenUtil.generateToken(user);
         return ResponseEntity.ok(new AuthenticationResponse(user.getGalUserId(), token));
     }
@@ -102,13 +102,13 @@ public class UserController {
         return new ResponseEntity<>(userService.saveUserPhoto(id, file), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/user/send-reset-email/{id}")
-    public ResponseEntity<?> photoUser(@PathVariable("id") long id, HttpServletRequest request) {
-        GalUser user = userService.getUserById(id).orElseThrow(() -> new UsernameNotFoundException(id + " not found"));
+    @PostMapping(value = "/user/send-reset-email/{email}")
+    public ResponseEntity<?> photoUser(@PathVariable("email") String email, HttpServletRequest request) {
+        GalUser user = userService.getUserByUsername(email).orElseThrow(() -> new UsernameNotFoundException(email + " not found"));
 
         String token = UUID.randomUUID().toString();
         passwordResetService.createEmailResetPassToken(user, token);
-        String url = request.getContextPath() + "api/user/change/password?id=" +
+        String url = request.getHeader("origin") + "/change-password?id=" +
                 user.getGalUserId() + "&token=" + token;
         emailService.sendMessage
                 (user.getEmail(), EmailTemplate.PASSWORD_RESET.getSubject(), EmailTemplate.PASSWORD_RESET.getText() + "  " + url);
@@ -132,7 +132,7 @@ public class UserController {
     @PutMapping(value = "/user/edit/password")
     public ResponseEntity<?> editPassword(@RequestParam("id") long id, @RequestParam("token") String token, @RequestBody String password) {
         try {
-            passwordResetService.validateResetPasswordToken(id, token, ResetTokenEnum.PASSWORD_RESET_ENABLED);
+            passwordResetService.validateResetPasswordToken(id, token, ResetTokenEnum.EMAIL_CONFIRMED);
         } catch (IllegalStateException _) {
             return new ResponseEntity<>("Wrong user or state", HttpStatus.BAD_REQUEST);
         } catch (ResetTokenExpirationException _) {

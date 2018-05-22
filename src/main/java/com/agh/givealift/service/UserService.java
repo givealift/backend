@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    GalUser getUserByUsername(String username);
+    Optional<GalUser> getUserByUsername(String username);
 
     Optional<GalUser> getUserById(long id);
 

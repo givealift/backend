@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public GalUser getUserByUsername(String username) {
-        return userRepository.findByEmail(username);
+    public Optional<GalUser> getUserByUsername(String username) {
+        return Optional.of(userRepository.findByEmail(username));
     }
 
 
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user).getGalUserId();
     }
 
-    @PreAuthorize("#id==principal.user.galUserId")
+    // @PreAuthorize("#id==principal.user.galUserId")
     public long editUserPassword(String password, long id) {
         GalUser user = userRepository.getOne(id);
         user.setPassword(passwordEncoder.encode(password));
