@@ -11,6 +11,7 @@ import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.AuthenticationResponse;
 import com.agh.givealift.model.response.GalUserResponse;
 import com.agh.givealift.security.JwtTokenUtil;
+import com.agh.givealift.security.UserDetails;
 import com.agh.givealift.service.FacebookService;
 import com.agh.givealift.service.PasswordResetService;
 import com.agh.givealift.service.RouteService;
@@ -27,7 +28,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -63,6 +64,14 @@ public class UserController {
         this.emailService = emailService;
         this.passwordResetService = passwordResetService;
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> authExc() {
+        return new ResponseEntity<>("Błędny login lub hasło", HttpStatus.UNAUTHORIZED);
+
+    }
+
+
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity signIn(@RequestBody LoginUser loginUser) throws AuthenticationException {
@@ -103,9 +112,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/send-reset-email/{email}")
-    public ResponseEntity<?> photoUser(@PathVariable("email") String email, HttpServletRequest request) {
-        GalUser user = userService.getUserByUsername(email).orElseThrow(() -> new UsernameNotFoundException(email + " not found"));
-
+    public ResponseEntity<?> sendResetEmail(@PathVariable("email") String email, HttpServletRequest request) {
+        Optional<GalUser> userOptional = userService.getUserByUsername(email);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>("Nie znaleziono użytkownika: " + email, HttpStatus.UNAUTHORIZED);
+        }
+        GalUser user = userOptional.get();
         String token = UUID.randomUUID().toString();
         passwordResetService.createEmailResetPassToken(user, token);
         String url = request.getHeader("origin") + "/change-password?id=" +
@@ -116,30 +128,27 @@ public class UserController {
         return new ResponseEntity<>(user.getEmail(), HttpStatus.OK);
     }
 
+    @SuppressWarnings("deprecation")
     @GetMapping(value = "/user/change/password")
-    public ResponseEntity<String> changePasswordPage(@RequestParam("id") long id, @RequestParam("token") String token) {
-        String newToken;
-        try {
-            newToken = passwordResetService.createPasswordResetToken(id, token);
-        } catch (IllegalStateException _) {
-            return new ResponseEntity<>("Wrong user or state", HttpStatus.BAD_REQUEST);
-        } catch (ResetTokenExpirationException _) {
-            return new ResponseEntity<>("Token Expired", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(newToken, HttpStatus.OK);
+    public ResponseEntity<String> changePassword(@RequestParam("old-password") String oldPass, @RequestParam("new-password") String newPass, Authentication authentication) throws AuthenticationException {
+        GalUser user = ((UserDetails) authentication.getPrincipal()).getUser();
+        userService.changeUserPassword(user, oldPass, newPass);
+        return new ResponseEntity<>("Hasło zmienione", HttpStatus.OK);
     }
 
-    @PutMapping(value = "/user/edit/password")
+
+    @PutMapping(value = "/user/reset/password")
+    @SuppressWarnings("deprecation")
     public ResponseEntity<?> editPassword(@RequestParam("id") long id, @RequestParam("token") String token, @RequestBody String password) {
         try {
             passwordResetService.validateResetPasswordToken(id, token, ResetTokenEnum.EMAIL_CONFIRMED);
         } catch (IllegalStateException _) {
             return new ResponseEntity<>("Wrong user or state", HttpStatus.BAD_REQUEST);
         } catch (ResetTokenExpirationException _) {
-            return new ResponseEntity<>("Token Expired", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Token Expired", HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<>(userService.editUserPassword(password, id), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.resetUserPassword(password, id), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/user/photo/{id}")

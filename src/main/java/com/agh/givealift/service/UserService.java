@@ -5,6 +5,7 @@ import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.GalUserPublicResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +26,12 @@ public interface UserService {
 
     Long editUser(SignUpUserRequest signUpUserRequest, long id);
 
-    long editUserPassword(String password, long id);
+    long resetUserPassword(String password, long id);
 
     void removeAll();
 
     Double changeRate(Integer rate, long id);
+
+
+    void changeUserPassword(GalUser user, String oldPass, String newPass) throws AuthenticationException;
 }

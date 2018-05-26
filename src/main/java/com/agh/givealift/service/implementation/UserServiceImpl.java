@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.AuthenticationException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Optional<GalUser> getUserByUsername(String username) {
-        return Optional.of(userRepository.findByEmail(username));
+        return Optional.ofNullable(userRepository.findByEmail(username));
     }
 
 
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // @PreAuthorize("#id==principal.user.galUserId")
-    public long editUserPassword(String password, long id) {
+    public long resetUserPassword(String password, long id) {
         GalUser user = userRepository.getOne(id);
         user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user).getGalUserId();
@@ -108,5 +109,16 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(user);
         return newRate;
+    }
+
+    @Override
+    public void changeUserPassword(GalUser user, String oldPass, String newPass) throws AuthenticationException {
+        if (!passwordEncoder.matches(oldPass, user.getPassword())) {
+            throw new AuthenticationException();
+        } else {
+            user.setPassword(passwordEncoder.encode(newPass));
+            userRepository.save(user);
+        }
+
     }
 }

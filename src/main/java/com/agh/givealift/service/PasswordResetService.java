@@ -13,4 +13,6 @@ public interface PasswordResetService {
     PasswordResetToken validateResetPasswordToken(long id, String token, ResetTokenEnum resetTokenEnum) throws IllegalStateException, ResetTokenExpirationException;
 
     String createPasswordResetToken(long id, String token);
+
+
 }
