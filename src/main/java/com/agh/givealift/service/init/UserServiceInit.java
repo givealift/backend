@@ -3,18 +3,15 @@ package com.agh.givealift.service.init;
 
 import com.agh.givealift.model.entity.GalUser;
 import com.agh.givealift.model.request.SignUpUserRequest;
-import com.agh.givealift.model.response.GalUserPublicResponse;
 import com.agh.givealift.repository.UserRepository;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Optional;
 
 @Service
@@ -42,6 +39,9 @@ public class UserServiceInit {
         signUpUserRequest.mapToGalUserWithoutPassword(newUser);
         newUser.setPassword(passwordEncoder.encode(signUpUserRequest.getPassword()));
         newUser.setRateAmount(0L);
+        Calendar calendar = new GregorianCalendar(1996, 1, 28, 13, 24, 56);
+        newUser.setRate(0D);
+        newUser.setBirthDate(calendar.getTime());
         newUser.setRole("USER");
         newUser = userRepository.save(newUser);
 
