@@ -1,5 +1,7 @@
 package com.agh.givealift.model.entity;
 
+import com.agh.givealift.model.enums.NotificationType;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Date;
@@ -12,6 +14,7 @@ public class Subscription {
     private City from;
     private City to;
     private Date date;
+    private NotificationType notificationType;
 
     public Subscription() {
     }
@@ -66,5 +69,13 @@ public class Subscription {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public NotificationType getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 }

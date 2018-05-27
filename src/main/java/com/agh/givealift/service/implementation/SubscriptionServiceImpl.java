@@ -2,15 +2,16 @@ package com.agh.givealift.service.implementation;
 
 import com.agh.givealift.Configuration;
 import com.agh.givealift.model.Tuple;
-import com.agh.givealift.model.entity.City;
-import com.agh.givealift.model.entity.Localization;
-import com.agh.givealift.model.entity.Route;
-import com.agh.givealift.model.entity.Subscription;
+import com.agh.givealift.model.entity.*;
+import com.agh.givealift.model.enums.DeviceType;
+import com.agh.givealift.model.enums.NotificationType;
 import com.agh.givealift.model.request.SubscriptionRequest;
+import com.agh.givealift.model.response.PushNotificationResponse;
 import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.repository.SubscriptionRepository;
 import com.agh.givealift.service.CityService;
 import com.agh.givealift.service.NotificationService;
+import com.agh.givealift.service.PushNotificationService;
 import com.agh.givealift.service.SubscriptionService;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
@@ -29,16 +30,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final CityService cityService;
     private final NotificationService notificationService;
+    private final PushNotificationService pushNotificationService;
 
     @Autowired
     public SubscriptionServiceImpl(
             SubscriptionRepository subscriptionRepository,
             CityService cityService,
-            NotificationService notificationService
+            NotificationService notificationService,
+            PushNotificationService pushNotificationService
     ) {
         this.subscriptionRepository = subscriptionRepository;
         this.cityService = cityService;
         this.notificationService = notificationService;
+        this.pushNotificationService = pushNotificationService;
         CODGlobal.setImmersionLevel(4);
     }
 
@@ -52,11 +56,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscription.setSubscriber(subscriptionRequest.getSubscriber());
             subscription.setEmail(subscriptionRequest.getSubscriber());
             subscription.setDate(subscriptionRequest.getDate());
+            subscription.setNotificationType(subscriptionRequest.getNotificationType());
             subscription.setFrom(fromCity.get());
             subscription.setTo(toCity.get());
 
             subscription = subscriptionRepository.save(subscription);
-            cod.i("ADDED SUBSCRIPTION: ", subscription);
+            cod.c().addShowToString(NotificationType.class, DeviceType.class).i("ADDED SUBSCRIPTION: ", subscription);
             return Optional.of(subscription);
         }
         return Optional.empty();
@@ -65,14 +70,39 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public void checkAndNotify(Route route) {
         try {
-            notificationService.notifyBot(check(route));
+            List<SubscriptionResponse> all = check(route);
+
+            cod.c().addShowToString(NotificationType.class, DeviceType.class).i(all);
+            notificationService.notifyBot(all.stream()
+                    .filter(s -> s.getNotificationType().equals(NotificationType.BOT))
+                    .collect(Collectors.toList())
+            );
+
+            List<PushNotificationResponse> pushNotificationResponses = pushNotificationService.findNotification(
+                    all.stream()
+                            .filter(s -> s.getNotificationType().equals(NotificationType.PUSH))
+                            .collect(Collectors.toList())
+            );
+
+            notificationService.notifyWeb(pushNotificationResponses.stream()
+                    .filter(pnr -> pnr.getDeviceType().equals(DeviceType.WEB))
+                    .collect(Collectors.toList())
+            );
+
+            notificationService.notifyMobile(pushNotificationResponses.stream()
+                    .filter(pnr -> pnr.getDeviceType().equals(DeviceType.MOBILE))
+                    .collect(Collectors.toList())
+            );
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    @Override public List<Subscription> getAll() {
-      return  subscriptionRepository.findAll();
+    @Override
+    public List<Subscription> getAll() {
+        return subscriptionRepository.findAll();
     }
 
     private List<SubscriptionResponse> check(Route route) throws ParseException {
@@ -108,6 +138,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                     response.setFrom(route.getFrom().getCity());
                     response.setTo(route.getTo().getCity());
                     response.setRouteId(route.getRouteId());
+                    response.setNotificationType(r.getNotificationType());
                     return response;
                 }
         ).collect(Collectors.toList());
@@ -133,29 +164,29 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return result;
 
     }
-    
-   public  SubscriptionResponse mapToSubscriptionRseponse(Subscription subscription){
-                 SubscriptionResponse response = new SubscriptionResponse();
-                    response.setSubscriber(subscription.getSubscriber());
-                    response.setEmail(subscription.getEmail());
-                    response.setDate(subscription.getDate());
-                    response.setFrom(subscription.getFrom());
-                    response.setTo(subscription.getTo());
-                    return response;
-        
-        
+
+    public SubscriptionResponse mapToSubscriptionResponse(Subscription subscription) {
+        SubscriptionResponse response = new SubscriptionResponse();
+        response.setSubscriber(subscription.getSubscriber());
+        response.setEmail(subscription.getEmail());
+        response.setDate(subscription.getDate());
+        response.setFrom(subscription.getFrom());
+        response.setTo(subscription.getTo());
+        return response;
+
+
     }
 
     @Override
     public Long delete(long id) {
         Optional<Subscription> subscription = subscriptionRepository.findById(id);
-       if(subscription.isPresent()){
-           subscriptionRepository.deleteById(id);
-           return subscription.get().getSubscriptionId();
-       }
-       return null;
-       
-       
+        if (subscription.isPresent()) {
+            subscriptionRepository.deleteById(id);
+            return subscription.get().getSubscriptionId();
+        }
+        return null;
+
+
     }
 
 }

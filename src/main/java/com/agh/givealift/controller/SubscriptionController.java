@@ -44,7 +44,7 @@ public class SubscriptionController {
     @GetMapping("/all")
     public ResponseEntity<List<SubscriptionResponse>> getAllSubscription(){
         List<SubscriptionResponse> response =  subscriptionService.getAll()
-                .stream().map(subscriptionService::mapToSubscriptionRseponse).collect(Collectors.toList());
+                .stream().map(subscriptionService::mapToSubscriptionResponse).collect(Collectors.toList());
           return new ResponseEntity<>(response,HttpStatus.OK);               
     }
     
@@ -53,11 +53,12 @@ public class SubscriptionController {
      @DeleteMapping("/{id}")
      public ResponseEntity<?> getAllSubscription(@PathVariable("id") long id) {
          Optional<Long> subscription = Optional.ofNullable(subscriptionService.delete(id));
-              if(!subscription.isPresent()) return new ResponseEntity<>("Uzytkownik nie istnieje",HttpStatus.BAD_REQUEST);
-              return new ResponseEntity<>(subscription.get(),HttpStatus.OK);      
-        
-        
-    }
+         return subscription
+                 .<ResponseEntity<?>>map(aLong -> new ResponseEntity<>(aLong, HttpStatus.OK))
+                 .orElseGet(() -> new ResponseEntity<>("User does not exists.", HttpStatus.BAD_REQUEST));
+
+
+     }
 
 
 }

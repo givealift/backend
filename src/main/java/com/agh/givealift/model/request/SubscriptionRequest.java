@@ -1,5 +1,7 @@
 package com.agh.givealift.model.request;
 
+import com.agh.givealift.model.enums.NotificationType;
+
 import java.util.Date;
 
 public class SubscriptionRequest {
@@ -8,6 +10,7 @@ public class SubscriptionRequest {
     private Long fromCityId;
     private Long toCityId;
     private Date date;
+    private NotificationType notificationType;
 
     public SubscriptionRequest() {
     }
@@ -50,5 +53,13 @@ public class SubscriptionRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public NotificationType getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 }

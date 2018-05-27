@@ -1,6 +1,7 @@
 package com.agh.givealift.model.response;
 
 import com.agh.givealift.model.entity.City;
+import com.agh.givealift.model.enums.NotificationType;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ public class SubscriptionResponse {
     private City to;
     private Date date;
     private Long routeId;
+    private NotificationType notificationType;
 
     public SubscriptionResponse() {
     }
@@ -61,5 +63,13 @@ public class SubscriptionResponse {
 
     public void setRouteId(Long routeId) {
         this.routeId = routeId;
+    }
+
+    public NotificationType getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 }

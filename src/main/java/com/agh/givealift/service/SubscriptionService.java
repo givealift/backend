@@ -18,7 +18,7 @@ public interface SubscriptionService {
     void checkAndNotify(Route route);
 
     List<Subscription> getAll();
-    SubscriptionResponse mapToSubscriptionRseponse(Subscription subscription) ;
+    SubscriptionResponse mapToSubscriptionResponse(Subscription subscription) ;
 
 
     Long delete(long id);

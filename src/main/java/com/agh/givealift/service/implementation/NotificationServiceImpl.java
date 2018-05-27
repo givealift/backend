@@ -1,9 +1,12 @@
 package com.agh.givealift.service.implementation;
 
 import com.agh.givealift.Configuration;
+import com.agh.givealift.model.response.PushNotificationResponse;
 import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.service.NotificationService;
 import com.agh.givealift.service.threads.NotifyBotThread;
+import com.agh.givealift.service.threads.NotifyMobileThread;
+import com.agh.givealift.service.threads.NotifyWebThread;
 import com.google.gson.Gson;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
@@ -39,9 +42,31 @@ public class NotificationServiceImpl implements NotificationService {
     public void notifyBot(List<SubscriptionResponse> subscriptionResponseList) {
         if (!subscriptionResponseList.isEmpty()) {
             taskExecutor.execute(() -> {
-                NotifyBotThread notifyBotThread = applicationContext.getBean(NotifyBotThread.class);
-                notifyBotThread.setSubscriptionResponseList(subscriptionResponseList);
-                taskExecutor.execute(notifyBotThread);
+                NotifyBotThread notifyThread = applicationContext.getBean(NotifyBotThread.class);
+                notifyThread.setSubscriptionResponseList(subscriptionResponseList);
+                taskExecutor.execute(notifyThread);
+            });
+        }
+    }
+
+    @Override
+    public void notifyWeb(List<PushNotificationResponse> pushNotificationResponses) {
+        if (!pushNotificationResponses.isEmpty()) {
+            taskExecutor.execute(() -> {
+                NotifyWebThread notifyThread = applicationContext.getBean(NotifyWebThread.class);
+                notifyThread.setPushNotificationResponses(pushNotificationResponses);
+                taskExecutor.execute(notifyThread);
+            });
+        }
+    }
+
+    @Override
+    public void notifyMobile(List<PushNotificationResponse> pushNotificationResponses) {
+        if (!pushNotificationResponses.isEmpty()) {
+            taskExecutor.execute(() -> {
+                NotifyMobileThread notifyThread = applicationContext.getBean(NotifyMobileThread.class);
+                notifyThread.setPushNotificationResponses(pushNotificationResponses);
+                taskExecutor.execute(notifyThread);
             });
         }
     }

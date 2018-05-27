@@ -4,6 +4,7 @@ import com.agh.givealift.Configuration;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.request.NewPassengerRequest;
+import com.agh.givealift.model.response.PushNotificationResponse;
 import com.agh.givealift.model.response.RouteResponse;
 import com.agh.givealift.service.RouteService;
 import com.stefanik.cod.controller.COD;
@@ -106,12 +107,32 @@ public class RouteController {
         return new ResponseEntity<>(routeService.getAll(), HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/test", method = RequestMethod.POST)
-//    public ResponseEntity<Route> test(
+//    @RequestMapping(value = "/testBot", method = RequestMethod.POST)
+//    public ResponseEntity<Route> testBot(
 //            @RequestBody List<SubscriptionResponse> sr
 //    ) {
 //        cod.i(sr);
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
+
+
+    @RequestMapping(value = "/testWeb", method = RequestMethod.POST)
+    public ResponseEntity<Route> testWeb(
+            @RequestBody List<PushNotificationResponse> request,
+            @RequestHeader HttpHeaders headers
+    ) {
+        cod.i(request, headers.get("Authorization").get(0));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/testMobile", method = RequestMethod.POST)
+    public ResponseEntity<Route> testMobile(
+            @RequestBody List<PushNotificationResponse> request,
+            @RequestHeader HttpHeaders headers
+    ) {
+        cod.i(request, headers.get("Authorization").get(0));
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
