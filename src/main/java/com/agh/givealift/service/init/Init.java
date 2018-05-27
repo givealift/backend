@@ -56,6 +56,8 @@ public class Init {
         signUp.setFirstName("name");
         signUp.setLastName("last");
         signUp.setGender("male");
+        signUp.setBirthYear(new GregorianCalendar(1997, 9, 15, 1, 10, 16).getTime());
+        signUp.setRate(0D);
         signUp.setPhone("666666666");
         return userServiceInit.signUp(signUp);
     }
@@ -67,6 +69,8 @@ public class Init {
         signUp.setFirstName("name");
         signUp.setLastName("last");
         signUp.setGender("female");
+        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setRate(0D);
         signUp.setPhone("999999999");
         return userServiceInit.signUp(signUp);
     }
@@ -90,19 +94,19 @@ public class Init {
         Localization s1 = new Localization();
         s1.setCity(cities.get(1));
         s1.setPlaceOfMeeting("s2 2");
-        s1.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(1+Configuration.HOURS_DIFFERENCE))));
+        s1.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(1 + Configuration.HOURS_DIFFERENCE))));
 
         Localization s2 = new Localization();
         s2.setCity(cities.get(2));
         s2.setPlaceOfMeeting("s3 3");
-        s2.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(3+Configuration.HOURS_DIFFERENCE))));
+        s2.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(3 + Configuration.HOURS_DIFFERENCE))));
 
         r.setStops(Arrays.asList(s1, s2));
 
         Localization to = new Localization();
         to.setCity(cities.get(3));
         to.setPlaceOfMeeting("s4 4");
-        to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(4+Configuration.HOURS_DIFFERENCE))));
+        to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(4 + Configuration.HOURS_DIFFERENCE))));
         r.setTo(to);
 
 
@@ -122,7 +126,7 @@ public class Init {
         Localization from = new Localization();
         from.setCity(cities.get(7));
         from.setPlaceOfMeeting("s2 2");
-        from.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(21+Configuration.HOURS_DIFFERENCE))));
+        from.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(21 + Configuration.HOURS_DIFFERENCE))));
         r.setFrom(from);
 
         r.setStops(Collections.emptyList());
@@ -130,7 +134,7 @@ public class Init {
         Localization to = new Localization();
         to.setCity(cities.get(8));
         to.setPlaceOfMeeting("s4 4");
-        to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(25+Configuration.HOURS_DIFFERENCE))));
+        to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(25 + Configuration.HOURS_DIFFERENCE))));
         r.setTo(to);
 
 

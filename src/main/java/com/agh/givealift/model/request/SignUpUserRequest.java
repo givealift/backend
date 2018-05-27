@@ -26,6 +26,7 @@ public class SignUpUserRequest {
         user.setGender(gender);
         user.setAddress(address);
         user.setBirthDate(birthYear);
+        user.setRate(rate);
 
         return user;
     }

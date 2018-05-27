@@ -39,9 +39,6 @@ public class UserServiceInit {
         signUpUserRequest.mapToGalUserWithoutPassword(newUser);
         newUser.setPassword(passwordEncoder.encode(signUpUserRequest.getPassword()));
         newUser.setRateAmount(0L);
-        Calendar calendar = new GregorianCalendar(1996, 1, 28, 13, 24, 56);
-        newUser.setRate(0D);
-        newUser.setBirthDate(calendar.getTime());
         newUser.setRole("USER");
         newUser = userRepository.save(newUser);
 
