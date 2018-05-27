@@ -10,9 +10,9 @@ public class Configuration {
     public static final String BOT_NOTIFY_URL = "https://givealift-bot.herokuapp.com/notifyBot";
     //    public static final String BOT_NOTIFY_URL = "http://localhost:8080/api/route/testBot";
 //    public static final String WEB_NOTIFY_URL = "https://fcm.googleapis.com/fcm/send";
-    public static final String WEB_NOTIFY_URL = "http://localhost:8080/api/route/testWeb";
+    public static final String WEB_NOTIFY_URL = "https://mysterious-lowlands-82501.herokuapp.com/api/route/testWeb";
 //    public static final String MOBILE_NOTIFY_URL = "https://fcm.googleapis.com/fcm/send";
-    public static final String MOBILE_NOTIFY_URL = "http://localhost:8080/api/route/testMobile";
+    public static final String MOBILE_NOTIFY_URL = "https://mysterious-lowlands-82501.herokuapp.com/api/route/testMobile";
 
 //    public static final int BOT_NOTIFY_TIMEOUT_SEC = 5;
 
