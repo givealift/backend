@@ -20,6 +20,8 @@ import com.stefanik.cod.controller.CODGlobal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,6 +76,7 @@ public class RouteServiceImpl implements RouteService {
         return routeRepository.findByOwnerId(id, pageable);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<RouteResponse> search(Long from, Long to, Date date) {
         List<Route> result = Collections.emptyList();
         try {

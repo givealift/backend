@@ -1,11 +1,13 @@
 package com.agh.givealift;
 
 import com.agh.givealift.model.entity.City;
+import com.agh.givealift.model.entity.GalUser;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.request.LoginUser;
 import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.model.response.RouteResponse;
+import com.agh.givealift.security.UserDetails;
 import com.agh.givealift.service.CityService;
 import com.agh.givealift.service.RouteService;
 import com.agh.givealift.service.UserService;
@@ -18,10 +20,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -62,38 +66,38 @@ public class RouteTest {
     @After
     public void after() throws ParseException {
 
-//        SecurityContextHolder.clearContext();
+        SecurityContextHolder.clearContext();
     }
 
     @Before
     public void before() throws ParseException {
 
-//        SecurityContext ctx = SecurityContextHolder.createEmptyContext();
-//        SecurityContextHolder.setContext(ctx);
-        if (!init) {
-//            signUp();
-//            loginUser = new LoginUser("a@a.pl", "admin");
 
-//            final Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(
-//                            loginUser.getUsername(),
-//                            loginUser.getPassword()
-//                    )
-//            );
-//            SecurityContext ctx = SecurityContextHolder.createEmptyContext();
-//            SecurityContextHolder.setContext(ctx);
-//            ctx.setAuthentication(authentication);
+        List<GrantedAuthority> ananymous = new ArrayList<GrantedAuthority>() {{
+            add(new SimpleGrantedAuthority("ANONYMOUS"));
+        }};
+        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken("test", new UserDetails(), ananymous));
+        cleanDB();
+        SignUpUserRequest userNew = new SignUpUserRequest();
+        userNew.setEmail("patryk@gm.pl");
+        userNew.setPassword("admin");
+        userService.signUp(userNew);
+
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        "patryk@gm.pl", "admin"
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final GalUser user = userService.getUserByUsername("patryk@gm.pl").get();
 
 
-            cleanDB();
-            generateRoute();
-            init = true;
-        }
+        generateRoute(user.getGalUserId());
 
 
     }
 
-    private void generateRoute() throws ParseException {
+    private void generateRoute(long id) throws ParseException {
         cStopsId = new ArrayList<>();
         List<City> cities = cityService.generate(100);
 
@@ -102,7 +106,7 @@ public class RouteTest {
         Route r = new Route();
         r.setNumberOfSeats(5);
         r.setNumberOfOccupiedSeats(2);
-        r.setOwnerId(1L);
+        r.setOwnerId(id);
         r.setPrice(10.0);
 
         Localization from = new Localization();
@@ -139,7 +143,7 @@ public class RouteTest {
     }
 
     private void cleanDB() {
-        cityService.removeAll();
+        // cityService.removeAll();
         routeService.removeAll();
         userService.removeAll();
     }

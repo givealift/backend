@@ -1,6 +1,8 @@
 package com.agh.givealift.model.entity;
 
 import com.agh.givealift.model.enums.ResetTokenEnum;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +24,7 @@ public class PasswordResetToken {
     private ResetTokenEnum resetTokenEnum;
 
     @OneToOne(targetEntity = GalUser.class, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(nullable = false, name = "GalUser_galUserId")
     private GalUser user;
 
