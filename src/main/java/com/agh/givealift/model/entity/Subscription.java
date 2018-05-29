@@ -3,7 +3,6 @@ package com.agh.givealift.model.entity;
 import com.agh.givealift.model.enums.NotificationType;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.Date;
 
 @Entity
@@ -14,6 +13,7 @@ public class Subscription {
     private City from;
     private City to;
     private Date date;
+    @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
     public Subscription() {

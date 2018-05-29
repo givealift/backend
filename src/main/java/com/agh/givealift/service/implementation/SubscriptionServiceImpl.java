@@ -2,7 +2,10 @@ package com.agh.givealift.service.implementation;
 
 import com.agh.givealift.Configuration;
 import com.agh.givealift.model.Tuple;
-import com.agh.givealift.model.entity.*;
+import com.agh.givealift.model.entity.City;
+import com.agh.givealift.model.entity.Localization;
+import com.agh.givealift.model.entity.Route;
+import com.agh.givealift.model.entity.Subscription;
 import com.agh.givealift.model.enums.DeviceType;
 import com.agh.givealift.model.enums.NotificationType;
 import com.agh.givealift.model.request.SubscriptionRequest;
@@ -171,6 +174,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         response.setEmail(subscription.getEmail());
         response.setDate(subscription.getDate());
         response.setFrom(subscription.getFrom());
+        response.setNotificationType(subscription.getNotificationType());
         response.setTo(subscription.getTo());
         return response;
 
