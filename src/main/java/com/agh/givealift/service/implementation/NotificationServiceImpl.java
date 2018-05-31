@@ -2,6 +2,7 @@ package com.agh.givealift.service.implementation;
 
 import com.agh.givealift.model.response.PushNotificationResponse;
 import com.agh.givealift.model.response.SubscriptionResponse;
+import com.agh.givealift.model.response.WebFCMResponse;
 import com.agh.givealift.service.NotificationService;
 import com.agh.givealift.service.threads.NotifyBotThread;
 import com.agh.givealift.service.threads.NotifyMobileThread;
@@ -55,7 +56,7 @@ public class NotificationServiceImpl implements NotificationService {
         for (PushNotificationResponse pnr : pushNotificationResponses) {
             taskExecutor.execute(() -> {
                 NotifyOneWebThread notifyThread = applicationContext.getBean(NotifyOneWebThread.class);
-                notifyThread.setPushNotificationResponse(pnr);
+                notifyThread.setPushNotificationResponse(new WebFCMResponse(pnr) );
                 taskExecutor.execute(notifyThread);
             });
         }
