@@ -1,6 +1,6 @@
 package com.agh.givealift.service.implementation;
 
-import com.agh.givealift.Configuration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.Tuple;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Localization;
@@ -24,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -114,19 +117,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         for (Tuple<Localization, List<Long>> t : allRoutes(route)) {
             Date date = t.getLeft().getDate();
 
-            Calendar calendar = GregorianCalendar.getInstance();
-            calendar.setTime(date);
-            calendar.get(Calendar.HOUR_OF_DAY);
-            Date cDate = new SimpleDateFormat(Configuration.DATE_SEARCH_PATTERN).parse(
-                    calendar.get(Calendar.YEAR) + "-" +
-                            calendar.get(Calendar.MONTH) + "-" +
-                            calendar.get(Calendar.DAY_OF_MONTH)
-            );
+            //Convert to data without time
+            LocalDate lDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            Date cDate = Date.from(Instant.from(lDate.atStartOfDay(ZoneId.systemDefault())));
+
+
             Long l = t.getLeft().getCity().getCityId();
             List<Long> r = t.getRight();
             List<Subscription> subs = subscriptionRepository.findSubscriptions(l, r, cDate);
-            cod.i(
-                    l + " | " + r + " | d: " + cDate,
+            cod.i(" | l:" + l +
+                            " | r: " + r +
+                            " | date: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(date) +
+                            " | lDate: " + lDate +
+                            " | cDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(cDate),
                     subs
             );
             result.addAll(subs);

@@ -1,13 +1,12 @@
 package com.agh.givealift.service.threads;
 
-import com.agh.givealift.Configuration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.response.SubscriptionResponse;
 import com.google.gson.Gson;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;

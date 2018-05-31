@@ -1,6 +1,6 @@
 package com.agh.givealift.controller;
 
-import com.agh.givealift.Configuration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.request.NewPassengerRequest;

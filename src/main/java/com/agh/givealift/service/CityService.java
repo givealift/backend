@@ -1,7 +1,7 @@
 package com.agh.givealift.service;
 
 
-import com.agh.givealift.Configuration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.CityInfo;
 import com.agh.givealift.repository.CityRepository;

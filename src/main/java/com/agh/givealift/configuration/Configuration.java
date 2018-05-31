@@ -1,4 +1,4 @@
-package com.agh.givealift;
+package com.agh.givealift.configuration;
 
 import java.util.Arrays;
 import java.util.List;

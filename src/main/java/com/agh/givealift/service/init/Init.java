@@ -1,20 +1,18 @@
 package com.agh.givealift.service.init;
 
-import com.agh.givealift.Configuration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.request.SignUpUserRequest;
 import com.agh.givealift.service.CityService;
 import com.agh.givealift.service.RouteService;
-import com.agh.givealift.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
 

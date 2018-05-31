@@ -1,8 +1,7 @@
 package com.agh.givealift.service.threads;
 
-import com.agh.givealift.Configuration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.response.PushNotificationResponse;
-import com.agh.givealift.model.response.SubscriptionResponse;
 import com.google.gson.Gson;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;

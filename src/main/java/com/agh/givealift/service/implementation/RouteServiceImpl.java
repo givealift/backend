@@ -1,7 +1,7 @@
 package com.agh.givealift.service.implementation;
 
 
-import com.agh.givealift.Configuration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.builder.RouteResponseBuilder;
 import com.agh.givealift.model.entity.City;
 import com.agh.givealift.model.entity.Localization;

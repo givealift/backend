@@ -1,10 +1,6 @@
 package com.agh.givealift.model.entity;
 
-import com.agh.givealift.Configuration;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity

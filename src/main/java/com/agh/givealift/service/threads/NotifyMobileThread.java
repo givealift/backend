@@ -1,7 +1,6 @@
 package com.agh.givealift.service.threads;
 
-import com.agh.givealift.Configuration;
-import com.agh.givealift.configuration.NotificationConfiguration;
+import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.response.PushNotificationResponse;
 import com.google.gson.Gson;
 import com.stefanik.cod.controller.COD;
@@ -13,10 +12,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import javax.management.Notification;
 import java.io.IOException;
 import java.util.List;
 
