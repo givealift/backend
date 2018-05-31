@@ -116,23 +116,23 @@ public class RouteController {
 //    }
 
 
-    @RequestMapping(value = "/testWeb", method = RequestMethod.POST)
-    public ResponseEntity<Route> testWeb(
-            @RequestBody List<PushNotificationResponse> request,
-            @RequestHeader HttpHeaders headers
-    ) {
-        cod.i(request, headers.get("Authorization").get(0));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/testMobile", method = RequestMethod.POST)
-    public ResponseEntity<Route> testMobile(
-            @RequestBody List<PushNotificationResponse> request,
-            @RequestHeader HttpHeaders headers
-    ) {
-        cod.i(request, headers.get("Authorization").get(0));
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/testWeb", method = RequestMethod.POST)
+//    public ResponseEntity<Route> testWeb(
+//            @RequestBody List<PushNotificationResponse> request,
+//            @RequestHeader HttpHeaders headers
+//    ) {
+//        cod.i(request, headers.get("Authorization").get(0));
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+//
+//    @RequestMapping(value = "/testMobile", method = RequestMethod.POST)
+//    public ResponseEntity<Route> testMobile(
+//            @RequestBody List<PushNotificationResponse> request,
+//            @RequestHeader HttpHeaders headers
+//    ) {
+//        cod.i(request, headers.get("Authorization").get(0));
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 }

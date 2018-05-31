@@ -81,38 +81,13 @@ public class RouteServiceImpl implements RouteService {
         List<Route> result = Collections.emptyList();
         try {
             if (date.compareTo(new SimpleDateFormat(Configuration.DATE_SEARCH_PATTERN).parse("0001-01-01")) != 0) {
-
-
                 Date fromDate = Date.from(date.toInstant().minus(Duration.ofSeconds(Configuration.SEARCH_BEFORE_SEC)));
                 Date toDate = Date.from(date.toInstant().plus(Duration.ofSeconds(Configuration.SEARCH_AFTER_SEC)));
-
-                cod.i("ROUTE search: "
-                        + "\n\t| cFrom: " + from
-                        + "\n\t| cTo: " + to
-                        + "\n\t| inputDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(date)
-                        + "\n\t| fromDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(fromDate)
-                        + "\n\t| toDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(toDate)
-                        + "\n\t"
-                );
-
-                result = routeRepository.findRoutes(
-                        fromDate,
-                        toDate,
-                        from,
-                        to
-                );
+                cod.i("ROUTE search: " + "\n\t| cFrom: " + from + "\n\t| cTo: " + to + "\n\t| inputDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(date) + "\n\t| fromDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(fromDate) + "\n\t| toDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(toDate) + "\n\t");
+                result = routeRepository.findRoutes(fromDate, toDate, from, to);
             } else {
-
-                cod.i("ROUTE search: "
-                        + "\n\t| cFrom: " + from
-                        + "\n\t| cTo: " + to
-                        + "\n\t| date: null"
-                        + "\n\t"
-                );
-                result = routeRepository.findRoutes(
-                        from,
-                        to
-                );
+                cod.i("ROUTE search: " + "\n\t| cFrom: " + from + "\n\t| cTo: " + to + "\n\t| date: null" + "\n\t");
+                result = routeRepository.findRoutes(from, to);
             }
         } catch (ParseException e) {
             e.printStackTrace();
