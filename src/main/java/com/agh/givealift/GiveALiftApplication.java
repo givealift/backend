@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GiveALiftApplication {
 
     public static void main(String[] args) {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));//TODO config
+        TimeZone.setDefault(TimeZone.getTimeZone("CEST"));//TODO config
         SpringApplication.run(GiveALiftApplication.class, args);
     }
 }
