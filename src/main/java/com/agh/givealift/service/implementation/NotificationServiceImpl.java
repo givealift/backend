@@ -5,6 +5,7 @@ import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.service.NotificationService;
 import com.agh.givealift.service.threads.NotifyBotThread;
 import com.agh.givealift.service.threads.NotifyMobileThread;
+import com.agh.givealift.service.threads.NotifyOneWebThread;
 import com.agh.givealift.service.threads.NotifyWebThread;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
@@ -41,10 +42,20 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void notifyWeb(List<PushNotificationResponse> pushNotificationResponses) {
-        if (!pushNotificationResponses.isEmpty()) {
+
+
+//        if (!pushNotificationResponses.isEmpty()) {
+//            taskExecutor.execute(() -> {
+//                NotifyWebThread notifyThread = applicationContext.getBean(NotifyWebThread.class);
+//                notifyThread.setPushNotificationResponses(pushNotificationResponses);
+//                taskExecutor.execute(notifyThread);
+//            });
+//        }
+
+        for (PushNotificationResponse pnr : pushNotificationResponses) {
             taskExecutor.execute(() -> {
-                NotifyWebThread notifyThread = applicationContext.getBean(NotifyWebThread.class);
-                notifyThread.setPushNotificationResponses(pushNotificationResponses);
+                NotifyOneWebThread notifyThread = applicationContext.getBean(NotifyOneWebThread.class);
+                notifyThread.setPushNotificationResponse(pnr);
                 taskExecutor.execute(notifyThread);
             });
         }
