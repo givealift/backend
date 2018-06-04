@@ -26,11 +26,51 @@ public interface RouteRepository extends JpaRepository<Route, String> {
                     "OR (s1.date between :dateStart AND :dateEnd AND s1.city.cityId = :cityFrom AND s2.city.cityId = :cityTo " +
                     "AND s1.date < s2.date)"
     )
-    List<Route> findRoutes(
+    List<Route> findRoutesDateFromTo(
             @Param(value = "dateStart") Date dateStart,
             @Param(value = "dateEnd") Date dateEnd,
             @Param(value = "cityFrom") Long cityFrom,
             @Param(value = "cityTo") Long cityTo
+    );
+
+    @Query(
+            "select distinct r from Route r "
+                    + "left join r.from f "
+                    + "left join r.stops s1 "
+                    + "left join r.stops s2 "
+                    + "left join r.to t "
+                    + "WHERE " +
+                    "(f.date between :dateStart AND :dateEnd AND f.city.cityId in (:cityFromList) AND t.city.cityId = :cityTo) " +
+                    "OR (s1.date between :dateStart AND :dateEnd AND s1.city.cityId in (:cityFromList) AND t.city.cityId = :cityTo)" +
+                    "OR (f.date between :dateStart AND :dateEnd AND f.city.cityId in (:cityFromList) AND s1.city.cityId = :cityTo)" +
+                    "OR (s1.date between :dateStart AND :dateEnd AND s1.city.cityId in (:cityFromList) AND s2.city.cityId = :cityTo " +
+                    "AND s1.date < s2.date)"
+    )
+    List<Route> findRoutesDateInFromTo(
+            @Param(value = "dateStart") Date dateStart,
+            @Param(value = "dateEnd") Date dateEnd,
+            @Param(value = "cityFromList") List<Long> cityFromList,
+            @Param(value = "cityTo") Long cityTo
+    );
+
+
+    @Query(
+            "select distinct r from Route r "
+                    + "left join r.from f "
+                    + "left join r.stops s1 "
+                    + "left join r.stops s2 "
+                    + "left join r.to t "
+                    + "WHERE " +
+                    "(f.date between :dateStart AND :dateEnd AND f.city.cityId = :cityFrom) " +
+                    "OR (s1.date between :dateStart AND :dateEnd AND s1.city.cityId = :cityFrom)" +
+                    "OR (f.date between :dateStart AND :dateEnd AND f.city.cityId = :cityFrom)" +
+                    "OR (s1.date between :dateStart AND :dateEnd AND s1.city.cityId = :cityFrom " +
+                    "AND s1.date < s2.date)"
+    )
+    List<Route> findRoutesDateFrom(
+            @Param(value = "dateStart") Date dateStart,
+            @Param(value = "dateEnd") Date dateEnd,
+            @Param(value = "cityFrom") Long cityFrom
     );
 
     @Query(
@@ -45,7 +85,7 @@ public interface RouteRepository extends JpaRepository<Route, String> {
                     + "OR (f.city.cityId = :cityFrom AND s1.city.cityId = :cityTo)"
                     + "OR (s1.city.cityId = :cityFrom AND s2.city.cityId = :cityTo AND s1.date < s2.date)"
     )
-    List<Route> findRoutes(
+    List<Route> findRoutesFromTo(
             @Param(value = "cityFrom") Long cityFrom,
             @Param(value = "cityTo") Long cityTo
     );
@@ -64,7 +104,7 @@ public interface RouteRepository extends JpaRepository<Route, String> {
 //                    "OR (s1.city.cityId = :cityFrom AND s2.city.cityId = :cityTo " +
 //                    "AND s1.date < s2.date AND :dateStart < :dateEnd)"
 //    )
-//    List<Route> findRoutes(
+//    List<Route> findRoutesDateFromTo(
 //            @Param(value = "dateStart") Date dateStart,
 //            @Param(value = "dateEnd") Date dateEnd,
 //            @Param(value = "cityFrom") Long cityFrom,

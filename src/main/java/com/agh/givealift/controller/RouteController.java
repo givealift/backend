@@ -83,6 +83,16 @@ public class RouteController {
         return new ResponseEntity<>(routeService.search(from, to, date), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/searchInterchanges", method = RequestMethod.GET)
+    public ResponseEntity<List<List<RouteResponse>>> searchInterchanges(
+            @RequestParam Long from,
+            @RequestParam Long to,
+            @RequestParam @DateTimeFormat(pattern = Configuration.DATE_SEARCH_PATTERN) Date date
+    ) {
+//        date = Date.from(date.toInstant().minus(Duration.ofHours(Configuration.HOURS_DIFFERENCE)));
+        return new ResponseEntity<>(routeService.searchInterchanges(from, to, date), HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/{routeId}/passenger", method = RequestMethod.POST)
     public ResponseEntity<List<Route>> addPassenger(
@@ -116,23 +126,23 @@ public class RouteController {
 //    }
 
 
-    @RequestMapping(value = "/testWeb", method = RequestMethod.POST)
-    public ResponseEntity<Route> testWeb(
-            @RequestBody List<PushNotificationResponse> request,
-            @RequestHeader HttpHeaders headers
-    ) {
-        cod.i(request, headers.get("Authorization").get(0));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/testMobile", method = RequestMethod.POST)
-    public ResponseEntity<Route> testMobile(
-            @RequestBody List<PushNotificationResponse> request,
-            @RequestHeader HttpHeaders headers
-    ) {
-        cod.i(request, headers.get("Authorization").get(0));
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/testWeb", method = RequestMethod.POST)
+//    public ResponseEntity<Route> testWeb(
+//            @RequestBody List<PushNotificationResponse> request,
+//            @RequestHeader HttpHeaders headers
+//    ) {
+//        cod.i(request, headers.get("Authorization").get(0));
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+//
+//    @RequestMapping(value = "/testMobile", method = RequestMethod.POST)
+//    public ResponseEntity<Route> testMobile(
+//            @RequestBody List<PushNotificationResponse> request,
+//            @RequestHeader HttpHeaders headers
+//    ) {
+//        cod.i(request, headers.get("Authorization").get(0));
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 }

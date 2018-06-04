@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Configuration {
     public static final Integer SEARCH_BEFORE_SEC = 0;
-    public static final Integer SEARCH_AFTER_SEC = 24 * 60 * 60; // 23:59:59
+    public static final Integer SEARCH_AFTER_SEC = 24 * 60 * 60;
+    public static final Integer SEARCH_INTERCHANGE_AFTER_SEC = 2 * 60 * 60;
     public static final long HOURS_DIFFERENCE = 0;
     public static final String BOT_NOTIFY_URL = "https://givealift-bot.herokuapp.com/notify";
     //    public static final String BOT_NOTIFY_URL = "http://localhost:8080/api/route/testBot";
