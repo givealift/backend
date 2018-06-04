@@ -43,6 +43,7 @@ public class Init {
         try {
             generateRoute01(uId1, cities);
             generateRoute02(uId2, cities);
+            generateRoute03(uId2, cities);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -135,6 +136,41 @@ public class Init {
         to.setCity(cities.get(8));
         to.setPlaceOfMeeting("s4 4");
         to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(25 + Configuration.HOURS_DIFFERENCE))));
+        r.setTo(to);
+
+
+        routeService.add(r);
+    }
+
+
+    private void generateRoute03(Long ownerId, List<City> cities) throws ParseException {
+
+        Route r = new Route();
+        r.setRouteId(2L);
+        r.setNumberOfSeats(3);
+        r.setNumberOfOccupiedSeats(0);
+        r.setOwnerId(ownerId);
+        r.setPrice(16.0);
+        r.setDescription("desc 2");
+
+        Localization from = new Localization();
+        from.setCity(cities.get(11));
+        from.setPlaceOfMeeting("s11 11");
+        from.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(2 + Configuration.HOURS_DIFFERENCE))));
+        r.setFrom(from);
+
+
+        Localization s1 = new Localization();
+        s1.setCity(cities.get(2));
+        s1.setPlaceOfMeeting("s2 2");
+        s1.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(4 + Configuration.HOURS_DIFFERENCE))));
+
+        r.setStops(Arrays.asList(s1));
+
+        Localization to = new Localization();
+        to.setCity(cities.get(8));
+        to.setPlaceOfMeeting("s4 4");
+        to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(7 + Configuration.HOURS_DIFFERENCE))));
         r.setTo(to);
 
 

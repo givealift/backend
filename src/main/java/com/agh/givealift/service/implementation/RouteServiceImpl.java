@@ -17,6 +17,7 @@ import com.agh.givealift.util.UnknownCityException;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import com.stefanik.cod.controller.CODGlobal;
+import org.omg.PortableServer.POA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,6 +78,7 @@ public class RouteServiceImpl implements RouteService {
         return routeRepository.findByOwnerId(id, pageable);
     }
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public List<RouteResponse> search(Long from, Long to, Date date) {
         List<Route> result = Collections.emptyList();
@@ -84,10 +87,10 @@ public class RouteServiceImpl implements RouteService {
                 Date fromDate = Date.from(date.toInstant().minus(Duration.ofSeconds(Configuration.SEARCH_BEFORE_SEC)));
                 Date toDate = Date.from(date.toInstant().plus(Duration.ofSeconds(Configuration.SEARCH_AFTER_SEC)));
                 cod.i("ROUTE search: " + "\n\t| cFrom: " + from + "\n\t| cTo: " + to + "\n\t| inputDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(date) + "\n\t| fromDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(fromDate) + "\n\t| toDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(toDate) + "\n\t");
-                result = routeRepository.findRoutes(fromDate, toDate, from, to);
+                result = routeRepository.findRoutesDateFromTo(fromDate, toDate, from, to);
             } else {
                 cod.i("ROUTE search: " + "\n\t| cFrom: " + from + "\n\t| cTo: " + to + "\n\t| date: null" + "\n\t");
-                result = routeRepository.findRoutes(from, to);
+                result = routeRepository.findRoutesFromTo(from, to);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -98,6 +101,67 @@ public class RouteServiceImpl implements RouteService {
                 .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserPublicInfo(r.getOwnerId())).build())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<List<RouteResponse>> searchInterchanges(Long from, Long to, Date date) {
+        List<RouteResponse> wi = search(from, to, date);
+        if (!wi.isEmpty()) {
+            return wi.stream().map(Arrays::asList).collect(Collectors.toList());
+        }
+
+        Date fromDate = Date.from(date.toInstant().minus(Duration.ofSeconds(Configuration.SEARCH_BEFORE_SEC)));
+        Date toDate = Date.from(date.toInstant().plus(Duration.ofSeconds(Configuration.SEARCH_AFTER_SEC)));
+        cod.i("ROUTE search: " + "\n\t| cFrom: " + from + "\n\t| fromDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(fromDate) + "\n\t| toDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(toDate) + "\n\t");
+        List<Route> firstParts = routeRepository.findRoutesDateFrom(fromDate, toDate, from);
+
+
+        List<List<RouteResponse>> result = new ArrayList<>();
+        CODGlobal.setImmersionLevel(5);
+        cod.i("firstParts", firstParts);
+        for (Route fp : firstParts) {
+            for (Localization l : getPotentialInterchange(from, fp)) {
+                cod.i("LOCALIZATIONS", l);
+                Date toInterchangeDate = Date.from(l.getDate().toInstant().plus(Duration.ofSeconds(Configuration.SEARCH_INTERCHANGE_AFTER_SEC)));
+                cod.i("INTERCHANGE search: " + "\n\t| cFrom: " + l.getCity().getCityId() + "\n\t| cTo: " + to + "\n\t| fromDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(l.getDate()) + "\n\t| toDate: " + new SimpleDateFormat(Configuration.DATA_PATTERN).format(toInterchangeDate) + "\n\t");
+
+                List<Route> secondPart = routeRepository.findRoutesDateFromTo(l.getDate(), toInterchangeDate, l.getCity().getCityId(), to);
+                cod.i("secondPart: ", secondPart);
+                for (Route sp : secondPart) {
+                    result.add(
+                            Arrays.asList(
+                                    new RouteResponseBuilder(fp).withGalUser(userService.getUserPublicInfo(fp.getOwnerId())).build(),
+                                    new RouteResponseBuilder(sp).withGalUser(userService.getUserPublicInfo(sp.getOwnerId())).build()
+                            )
+                    );
+                }
+            }
+        }
+        return result;
+    }
+
+    private List<Localization> getPotentialInterchange(Long from, Route r) {
+        List<Localization> potentialInterchange = new ArrayList<>();
+        boolean fromFlag = false;
+        for (Localization l : getRouteCities(r)) {
+            if (fromFlag) {
+                potentialInterchange.add(l);
+            }
+            if (l.getCity().getCityId().equals(from)) {
+                fromFlag = true;
+            }
+        }
+        return potentialInterchange;
+    }
+
+    private List<Localization> getRouteCities(Route route) {
+        List<Localization> cityIds = new ArrayList<>();
+        cityIds.add(route.getFrom());
+        cityIds.addAll(route.getStops());
+        cityIds.add(route.getTo());
+        return cityIds;
+    }
+
 
     public Optional<RouteResponse> get(long id) {
         return Optional.ofNullable(routeRepository.findByRouteId(id))
@@ -180,4 +244,6 @@ public class RouteServiceImpl implements RouteService {
         }
         return Optional.empty();
     }
+
+
 }
