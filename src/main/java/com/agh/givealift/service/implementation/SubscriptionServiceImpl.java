@@ -173,6 +173,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     public SubscriptionResponse mapToSubscriptionResponse(Subscription subscription) {
         SubscriptionResponse response = new SubscriptionResponse();
+        response.setSubscriptionId(subscription.getSubscriptionId());
         response.setSubscriber(subscription.getSubscriber());
         response.setEmail(subscription.getEmail());
         response.setDate(subscription.getDate());

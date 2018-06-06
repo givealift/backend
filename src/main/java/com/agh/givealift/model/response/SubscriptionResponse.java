@@ -6,6 +6,7 @@ import com.agh.givealift.model.enums.NotificationType;
 import java.util.Date;
 
 public class SubscriptionResponse {
+    private Long subscriptionId;
     private String subscriber;
     private String email;
     private City from;
@@ -15,6 +16,14 @@ public class SubscriptionResponse {
     private NotificationType notificationType;
 
     public SubscriptionResponse() {
+    }
+
+    public Long getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(Long subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
     public String getSubscriber() {
