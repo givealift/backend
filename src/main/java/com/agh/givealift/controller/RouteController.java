@@ -110,6 +110,22 @@ public class RouteController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(value = "/{routeId}/passenger/{passengerId}", method = RequestMethod.DELETE)
+    public ResponseEntity<List<Route>> removePassenger(
+            @PathVariable("routeId") long routeId,
+            @PathVariable("passengerId") long passengerId
+    ) {
+        routeService.removePassenger(routeId, passengerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rides/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<List<Route>> getUserRides(
+            @PathVariable("userId") long userId
+    ) {
+
+        return new ResponseEntity<>(routeService.getUserRides(userId), HttpStatus.OK);
+    }
 
     @Deprecated
     @RequestMapping(value = "", method = RequestMethod.GET)

@@ -140,6 +140,7 @@ public class RouteServiceImpl implements RouteService {
         return result;
     }
 
+
     private List<Localization> getPotentialInterchange(Long from, Route r) {
         List<Localization> potentialInterchange = new ArrayList<>();
         boolean fromFlag = false;
@@ -243,6 +244,28 @@ public class RouteServiceImpl implements RouteService {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void removePassenger(long routeId, long passengerId) {
+        Route nullableRoute = routeRepository.findByRouteId(routeId);
+
+        if (nullableRoute != null) {
+            nullableRoute.setPassengers(
+                    nullableRoute.getPassengers().stream()
+                            .filter(p -> !p.equals(passengerId))
+                            .collect(Collectors.toList())
+            );
+            Route route = routeRepository.save(nullableRoute);
+            cod.i("REMOVE PASSENGER", route);
+        }
+    }
+
+    @Override
+    public List<Route> getUserRides(long userId) {
+        return routeRepository.findAll().stream()
+                .filter(r -> r.getPassengers().stream().anyMatch(p -> p.equals(userId)))
+                .collect(Collectors.toList());
     }
 
 

@@ -33,4 +33,8 @@ public interface RouteService {
     Optional<Route> addPassenger(long routeId, NewPassengerRequest newPassenger);
 
     List<List<RouteResponse>> searchInterchanges(Long from, Long to, Date date);
+
+    void removePassenger(long routeId, long passengerId);
+
+    List<Route> getUserRides(long userId);
 }
