@@ -13,6 +13,7 @@ public class GalUserPublicResponse {
     private String gender;
     public Double rate;
     private Date birthYear;
+     private String description;
 
 
     public GalUserPublicResponse() {
@@ -27,6 +28,7 @@ public class GalUserPublicResponse {
         this.gender = galUser.getGender();
         this.rate = galUser.getRate();
         this.birthYear = galUser.getBirthDate();
+        this.description = galUser.getDescription();
     }
 
     public String getFirstName() {
@@ -91,5 +93,13 @@ public class GalUserPublicResponse {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

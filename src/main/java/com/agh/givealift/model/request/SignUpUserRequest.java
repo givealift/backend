@@ -17,6 +17,7 @@ public class SignUpUserRequest {
     private Date birthYear;
     private String address;
     private Double rate;
+    private String description;
 
     public GalUser mapToGalUserWithoutPassword(GalUser user) {
         user.setFirstName(firstName);
@@ -27,6 +28,7 @@ public class SignUpUserRequest {
         user.setAddress(address);
         user.setBirthDate(birthYear);
         user.setRate(rate);
+        user.setDescription(description);
 
         return user;
     }
@@ -102,5 +104,13 @@ public class SignUpUserRequest {
 
     public void setRate(Double rate) {
         this.rate = rate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

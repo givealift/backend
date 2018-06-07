@@ -14,7 +14,7 @@ public class GalUserResponse {
     private Date birthYear;
     private String address;
     private Double rate;
-    ;
+    private String description;
 
     public GalUserResponse(GalUser galUser) {
         this.firstName = galUser.getFirstName();
@@ -25,6 +25,7 @@ public class GalUserResponse {
         this.address = galUser.getAddress();
         this.birthYear = galUser.getBirthDate();
         this.rate = galUser.getRate();
+        this.description = galUser.getDescription();
     }
 
     public GalUserResponse() {
@@ -92,6 +93,14 @@ public class GalUserResponse {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 
