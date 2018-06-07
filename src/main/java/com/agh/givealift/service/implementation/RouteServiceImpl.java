@@ -17,7 +17,6 @@ import com.agh.givealift.util.UnknownCityException;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import com.stefanik.cod.controller.CODGlobal;
-import org.omg.PortableServer.POA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -256,15 +254,17 @@ public class RouteServiceImpl implements RouteService {
                             .filter(p -> !p.equals(passengerId))
                             .collect(Collectors.toList())
             );
+            nullableRoute.setNumberOfOccupiedSeats(nullableRoute.getNumberOfOccupiedSeats()-1);
             Route route = routeRepository.save(nullableRoute);
             cod.i("REMOVE PASSENGER", route);
         }
     }
 
     @Override
-    public List<Route> getUserRides(long userId) {
+    public List<RouteResponse> getUserRides(long userId) {
         return routeRepository.findAll().stream()
                 .filter(r -> r.getPassengers().stream().anyMatch(p -> p.equals(userId)))
+                .map(r -> new RouteResponseBuilder(r).withGalUser(userService.getUserPublicInfo(r.getOwnerId())).build())
                 .collect(Collectors.toList());
     }
 

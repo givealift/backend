@@ -120,10 +120,9 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/rides/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<List<Route>> getUserRides(
+    public ResponseEntity<List<RouteResponse>> getUserRides(
             @PathVariable("userId") long userId
     ) {
-
         return new ResponseEntity<>(routeService.getUserRides(userId), HttpStatus.OK);
     }
 
