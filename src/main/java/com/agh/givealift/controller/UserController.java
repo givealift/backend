@@ -20,6 +20,7 @@ import com.agh.givealift.service.implementation.EmailService;
 import com.agh.givealift.util.ResetTokenExpirationException;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
+import org.hibernate.TransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -65,11 +69,6 @@ public class UserController {
         this.passwordResetService = passwordResetService;
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<String> authExc() {
-        return new ResponseEntity<>("Błędny login lub hasło", HttpStatus.UNAUTHORIZED);
-
-    }
 
 
 

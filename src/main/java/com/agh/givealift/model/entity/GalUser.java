@@ -1,31 +1,36 @@
 package com.agh.givealift.model.entity;
 
-import org.springframework.lang.NonNull;
+
+
+import com.agh.givealift.service.init.UniqueLogin;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.*;
+
 import java.util.Date;
 
 @Entity
 public class GalUser {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long galUserId;
 
-    @NonNull
+ @NotNull(message = "Pole Hasło nie może być puste")
     private String password;
     @Column(unique = true)
     private String facebookId;
     private String firstName;
-    @Column(unique = true, nullable = false)
-    @Email
+   // @UniqueLogin(message = "Podany email istnieje w bazie")
+    @Column(unique = true,nullable = false)
+    @Email(message = "Niepoprawny format email")
     private String email;
     private String lastName;
     private Date birthDate;
     private String address;
+  @Pattern(regexp="[\\d]{6,10}",message = "Niepoprawny format numeru")
     private String phone;
+   @DecimalMin(value = "0",message = "Niepoprawna ocena")
+   @DecimalMax(value = "5",message = "Niepoprawna ocena")
     private Double rate;
     private Long rateAmount;
     private String gender;
