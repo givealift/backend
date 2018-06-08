@@ -32,7 +32,7 @@ public class Init {
 
 
     @Transactional
-    ///@PostConstruct
+    @PostConstruct
     public void init() {
 
         List<City> cities = cityService.generate(100);
