@@ -2,6 +2,7 @@ package com.agh.givealift.service.threads;
 
 import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.response.PushNotificationResponse;
+import com.agh.givealift.model.response.PushNotificationResponses;
 import com.google.gson.Gson;
 import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
@@ -22,7 +23,7 @@ import java.util.List;
 public class NotifyWebThread extends Thread {
 
     private static final COD cod = CODFactory.get();
-    private List<PushNotificationResponse> pushNotificationResponses;
+    private PushNotificationResponses pushNotificationResponses;
     public String notificationKey;
 
 
@@ -31,7 +32,7 @@ public class NotifyWebThread extends Thread {
         this.notificationKey = notificationKey;
     }
 
-    public void setPushNotificationResponses(List<PushNotificationResponse> pushNotificationResponses) {
+    public void setPushNotificationResponses(PushNotificationResponses pushNotificationResponses) {
         this.pushNotificationResponses = pushNotificationResponses;
     }
 

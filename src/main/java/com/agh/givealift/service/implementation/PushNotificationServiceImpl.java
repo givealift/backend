@@ -4,6 +4,7 @@ import com.agh.givealift.model.entity.*;
 import com.agh.givealift.model.enums.DeviceType;
 import com.agh.givealift.model.request.PushNotificationRequest;
 import com.agh.givealift.model.response.PushNotificationResponse;
+import com.agh.givealift.model.response.PushNotificationResponses;
 import com.agh.givealift.model.response.PushSubscriptionResponse;
 import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.repository.PushNotificationRepository;
@@ -31,16 +32,21 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
     @Override
     public Optional<PushNotification> add(PushNotificationRequest pushNotificationRequest) {
-        PushNotification pushNotification = new PushNotification();
 
-        pushNotification.setUserId(pushNotificationRequest.getUserId());
-        pushNotification.setDeviceType(pushNotificationRequest.getDeviceType());
-        pushNotification.setPushToken(pushNotificationRequest.getPushToken());
+        List<PushNotification> result = pushNotificationRepository.findByPushTokenAndUserId(pushNotificationRequest.getPushToken(), pushNotificationRequest.getUserId());
+        if (result.size() == 0) {
+            PushNotification pushNotification = new PushNotification();
+
+            pushNotification.setUserId(pushNotificationRequest.getUserId());
+            pushNotification.setDeviceType(pushNotificationRequest.getDeviceType());
+            pushNotification.setPushToken(pushNotificationRequest.getPushToken());
 
 
-        pushNotification = pushNotificationRepository.save(pushNotification);
-        cod.c().addShowToString(DeviceType.class).i("ADDED PUSH NOTIFICATION: ", pushNotification);
-        return Optional.of(pushNotification);
+            pushNotification = pushNotificationRepository.save(pushNotification);
+            cod.c().addShowToString(DeviceType.class).i("ADDED PUSH NOTIFICATION: ", pushNotification);
+            return Optional.of(pushNotification);
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -59,6 +65,22 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         cod.i("FOUND PUSH NOTIFICATION RESPONSES: ", pushNotificationResponses);
 
         return pushNotificationResponses;
+    }
+
+    @Override
+    public PushNotificationResponses findNotification2(List<SubscriptionResponse> subscriptionResponses) {
+        if (subscriptionResponses.size() > 0) {
+            ArrayList<String> l = new ArrayList<>();
+            for (PushNotification pn : pushNotificationRepository.find(Long.parseLong(subscriptionResponses.get(0).getSubscriber()))) {
+                l.add(pn.getPushToken());
+            }
+            PushNotificationResponses pnr = new PushNotificationResponses();
+            pnr.setData(getPushSubscriptionResponse(subscriptionResponses.get(0)));
+            pnr.setRegistration_ids(l);
+            cod.i("FOUND PUSH NOTIFICATION RESPONSES2: ", pnr);
+            return pnr;
+        }
+        return null;
     }
 
     private PushSubscriptionResponse getPushSubscriptionResponse(SubscriptionResponse sr) {

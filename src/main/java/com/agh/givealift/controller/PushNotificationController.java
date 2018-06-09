@@ -40,6 +40,6 @@ public class PushNotificationController {
                             return ResponseEntity.ok().headers(headers).body(s.getPushNotificationId());
                         }
                 )
-                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+                .orElse(new ResponseEntity<>(HttpStatus.ALREADY_REPORTED));
     }
 }

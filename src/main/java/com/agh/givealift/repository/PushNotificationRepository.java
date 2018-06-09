@@ -17,4 +17,6 @@ public interface PushNotificationRepository extends JpaRepository<PushNotificati
             @Param(value = "id") Long id
     );
 
+    List<PushNotification> findByPushTokenAndUserId(String token, Long userId);
+
 }

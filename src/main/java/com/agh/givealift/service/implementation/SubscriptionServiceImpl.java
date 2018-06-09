@@ -10,6 +10,7 @@ import com.agh.givealift.model.enums.DeviceType;
 import com.agh.givealift.model.enums.NotificationType;
 import com.agh.givealift.model.request.SubscriptionRequest;
 import com.agh.givealift.model.response.PushNotificationResponse;
+import com.agh.givealift.model.response.PushNotificationResponses;
 import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.repository.SubscriptionRepository;
 import com.agh.givealift.service.CityService;
@@ -89,6 +90,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                             .filter(s -> s.getNotificationType().equals(NotificationType.PUSH))
                             .collect(Collectors.toList())
             );
+            PushNotificationResponses result = pushNotificationService.findNotification2(
+                    all.stream()
+                            .filter(s -> s.getNotificationType().equals(NotificationType.PUSH))
+                            .collect(Collectors.toList())
+            );
+            notificationService.notifyWeb2(result);
 
             notificationService.notifyWeb(pushNotificationResponses.stream()
                     .filter(pnr -> pnr.getDeviceType().equals(DeviceType.WEB))
