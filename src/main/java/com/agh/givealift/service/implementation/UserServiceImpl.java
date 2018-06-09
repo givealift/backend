@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //  @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<GalUser> list() {
         return userRepository.findAll();
     }
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user).getGalUserId();
     }
 
-    
+
     public long resetUserPassword(String password, long id) {
         GalUser user = userRepository.getOne(id);
           if(password==null){
