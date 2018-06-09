@@ -52,12 +52,12 @@ public class Init {
         SignUpUserRequest signUp = new SignUpUserRequest();
         signUp.setEmail("user1@gmail.pl");
         signUp.setPassword("admin");
-        signUp.setFirstName("name");
-        signUp.setLastName("last");
+        signUp.setFirstName("Jan");
+        signUp.setLastName("Kowalski");
         signUp.setGender("male");
         signUp.setBirthYear(new GregorianCalendar(1997, 9, 15, 1, 10, 16).getTime());
         signUp.setRate(0D);
-        signUp.setPhone("666666666");
+        signUp.setPhone("365198320");
         return userServiceInit.signUp(signUp);
     }
 
@@ -65,13 +65,13 @@ public class Init {
         SignUpUserRequest signUp = new SignUpUserRequest();
         signUp.setEmail("user2@gmail.pl");
         signUp.setPassword("admin");
-        signUp.setFirstName("name");
-        signUp.setLastName("last");
+        signUp.setFirstName("Anna");
+        signUp.setLastName("Mickiewicz");
         signUp.setGender("female");
         signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(0D);
-        signUp.setPhone("999999999");
-        return userServiceInit.signUp(signUp);
+        signUp.setPhone("687998564");
+        return userServiceInit.signUp(signUp);        
     }
 
     private void generateRoute01(Long ownerId, List<City> cities) throws ParseException {
@@ -82,29 +82,29 @@ public class Init {
         r.setNumberOfOccupiedSeats(0);
         r.setOwnerId(ownerId);
         r.setPrice(10.0);
-        r.setDescription("desc 1");
+        r.setDescription("Jade z Warszway do Wrocka, przez Krk i Łódź");
 
         Localization from = new Localization();
         from.setCity(cities.get(0));
-        from.setPlaceOfMeeting("s1 1");
+        from.setPlaceOfMeeting("Pałac Kultury i Nauki");
         from.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(Configuration.HOURS_DIFFERENCE))));
         r.setFrom(from);
 
         Localization s1 = new Localization();
         s1.setCity(cities.get(1));
-        s1.setPlaceOfMeeting("s2 2");
+        s1.setPlaceOfMeeting("Sukiennice");
         s1.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(1 + Configuration.HOURS_DIFFERENCE))));
 
         Localization s2 = new Localization();
         s2.setCity(cities.get(2));
-        s2.setPlaceOfMeeting("s3 3");
+        s2.setPlaceOfMeeting("łódź fabryczna");
         s2.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(3 + Configuration.HOURS_DIFFERENCE))));
 
         r.setStops(Arrays.asList(s1, s2));
 
         Localization to = new Localization();
         to.setCity(cities.get(3));
-        to.setPlaceOfMeeting("s4 4");
+        to.setPlaceOfMeeting("Planetarium");
         to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(4 + Configuration.HOURS_DIFFERENCE))));
         r.setTo(to);
 
@@ -120,11 +120,11 @@ public class Init {
         r.setNumberOfOccupiedSeats(0);
         r.setOwnerId(ownerId);
         r.setPrice(16.0);
-        r.setDescription("desc 2");
+        r.setDescription("Bydgoszcz - Lublin");
 
         Localization from = new Localization();
         from.setCity(cities.get(7));
-        from.setPlaceOfMeeting("s2 2");
+        from.setPlaceOfMeeting("Poniatowskiego 12");
         from.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(21 + Configuration.HOURS_DIFFERENCE))));
         r.setFrom(from);
 
@@ -132,7 +132,7 @@ public class Init {
 
         Localization to = new Localization();
         to.setCity(cities.get(8));
-        to.setPlaceOfMeeting("s4 4");
+        to.setPlaceOfMeeting("uniwersytet");
         to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(25 + Configuration.HOURS_DIFFERENCE))));
         r.setTo(to);
 
@@ -149,25 +149,25 @@ public class Init {
         r.setNumberOfOccupiedSeats(0);
         r.setOwnerId(ownerId);
         r.setPrice(16.0);
-        r.setDescription("desc 2");
+        r.setDescription("Nie mam klimy, ale i tak będzie fajnie");
 
         Localization from = new Localization();
         from.setCity(cities.get(11));
-        from.setPlaceOfMeeting("s11 11");
+        from.setPlaceOfMeeting("Plaża");
         from.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(2 + Configuration.HOURS_DIFFERENCE))));
         r.setFrom(from);
 
 
         Localization s1 = new Localization();
         s1.setCity(cities.get(2));
-        s1.setPlaceOfMeeting("s2 2");
+        s1.setPlaceOfMeeting("łódź fabryczna");
         s1.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(4 + Configuration.HOURS_DIFFERENCE))));
 
         r.setStops(Arrays.asList(s1));
 
         Localization to = new Localization();
         to.setCity(cities.get(8));
-        to.setPlaceOfMeeting("s4 4");
+        to.setPlaceOfMeeting("KUL");
         to.setDate(Date.from(new Date().toInstant().plus(Duration.ofHours(7 + Configuration.HOURS_DIFFERENCE))));
         r.setTo(to);
 
