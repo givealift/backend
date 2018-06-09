@@ -14,7 +14,7 @@ public class SignUpUserRequest {
     private String email;
     private String phone;
     private String gender;
-    private Date birthYear;
+    private Date birthDate;
     private String address;
     private Double rate;
     private String description;
@@ -27,7 +27,7 @@ public class SignUpUserRequest {
         user.setPhone(phone);
         user.setGender(gender);
         user.setAddress(address);
-        user.setBirthDate(birthYear);
+        user.setBirthDate(birthDate);
         user.setRate(rate);
         user.setDescription(description);
         user.setCar(car);
@@ -84,12 +84,12 @@ public class SignUpUserRequest {
         this.gender = gender;
     }
 
-    public Date getBirthYear() {
-        return birthYear;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthYear(Date birthYear) {
-        this.birthYear = birthYear;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getAddress() {

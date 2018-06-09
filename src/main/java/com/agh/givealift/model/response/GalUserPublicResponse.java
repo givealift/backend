@@ -12,7 +12,7 @@ public class GalUserPublicResponse {
     private String phone;
     private String gender;
     public Double rate;
-    private Date birthYear;
+    private Date birthDate;
      private String description;
     private String car;
 
@@ -28,7 +28,7 @@ public class GalUserPublicResponse {
         this.phone = galUser.getPhone();
         this.gender = galUser.getGender();
         this.rate = galUser.getRate();
-        this.birthYear = galUser.getBirthDate();
+        this.birthDate = galUser.getBirthDate();
         this.description = galUser.getDescription();
         this.car = galUser.getCar();
     }
@@ -81,12 +81,12 @@ public class GalUserPublicResponse {
         this.rate = rate;
     }
 
-    public Date getBirthYear() {
-        return birthYear;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthYear(Date birthYear) {
-        this.birthYear = birthYear;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public long getUserId() {
