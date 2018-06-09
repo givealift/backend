@@ -38,6 +38,12 @@ public class Init {
         List<City> cities = cityService.generate(100);
         Long uId1 = signUp01();
         Long uId2 = signUp02();
+        Long uIdBG = signUpBG();
+        Long uIdMW = signUpMW();
+        Long uIdKS = signUpKS();
+        Long uIdDS = signUpDS();
+        Long uIdPZ = signUpPZ();
+        Long uIdJO = signUpJO();
         try {
             generateRoute01(uId1, cities);
             generateRoute02(uId2, cities);
@@ -71,7 +77,85 @@ public class Init {
         signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(0D);
         signUp.setPhone("687998564");
-        return userServiceInit.signUp(signUp);        
+        return userServiceInit.signUp(signUp);
+    }
+
+    private Long signUpMW() {
+        SignUpUserRequest signUp = new SignUpUserRequest();
+        signUp.setEmail("mw@gmail.pl");
+        signUp.setPassword("admin");
+        signUp.setFirstName("Marcin");
+        signUp.setLastName("Wloczko");
+        signUp.setGender("male");
+        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setRate(5D);
+        signUp.setPhone("123456789");
+        return userServiceInit.signUp(signUp);
+    }
+
+    private Long signUpBG() {
+        SignUpUserRequest signUp = new SignUpUserRequest();
+        signUp.setEmail("bg@gmail.pl");
+        signUp.setPassword("admin");
+        signUp.setFirstName("Bartek");
+        signUp.setLastName("Grodek");
+        signUp.setGender("male");
+        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setRate(5D);
+        signUp.setPhone("234567890");
+        return userServiceInit.signUp(signUp);
+    }
+
+    private Long signUpKS() {
+        SignUpUserRequest signUp = new SignUpUserRequest();
+        signUp.setEmail("ks@gmail.pl");
+        signUp.setPassword("admin");
+        signUp.setFirstName("Krzysztof");
+        signUp.setLastName("Szczyrbak");
+        signUp.setGender("male");
+        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setRate(4D);
+        signUp.setPhone("345678901");
+        return userServiceInit.signUp(signUp);
+    }
+
+    private Long signUpDS() {
+        SignUpUserRequest signUp = new SignUpUserRequest();
+        signUp.setEmail("ds@gmail.pl");
+        signUp.setPassword("admin");
+        signUp.setFirstName("Daniel");
+        signUp.setLastName("Stefanik");
+        signUp.setGender("male");
+        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setRate(4D);
+        signUp.setPhone("456789012");
+        return userServiceInit.signUp(signUp);
+    }
+
+    private Long signUpPZ() {
+        SignUpUserRequest signUp = new SignUpUserRequest();
+        signUp.setEmail("pz@gmail.pl");
+        signUp.setPassword("admin");
+        signUp.setFirstName("Patryk");
+        signUp.setLastName("Zygmunt");
+        signUp.setGender("male");
+        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setRate(4D);
+        signUp.setPhone("567890123");
+        return userServiceInit.signUp(signUp);
+    }
+
+    private Long signUpJO() {
+        SignUpUserRequest signUp = new SignUpUserRequest();
+        signUp.setEmail("jo@gmail.pl");
+        signUp.setPassword("admin");
+        signUp.setFirstName("Jacek");
+        signUp.setLastName("Oles");
+        signUp.setGender("male");
+        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setRate(5D);
+        signUp.setPhone("678901234");
+        return userServiceInit.signUp(signUp);
     }
 
     private void generateRoute01(Long ownerId, List<City> cities) throws ParseException {
