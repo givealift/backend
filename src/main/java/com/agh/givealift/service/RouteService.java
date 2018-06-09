@@ -37,4 +37,6 @@ public interface RouteService {
     void removePassenger(long routeId, long passengerId);
 
     List<RouteResponse> getUserRides(long userId);
+
+    void deleteRoute(long id);
 }

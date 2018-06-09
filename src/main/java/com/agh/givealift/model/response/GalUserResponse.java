@@ -15,6 +15,7 @@ public class GalUserResponse {
     private String address;
     private Double rate;
     private String description;
+    private String car;
 
     public GalUserResponse(GalUser galUser) {
         this.firstName = galUser.getFirstName();
@@ -26,6 +27,7 @@ public class GalUserResponse {
         this.birthYear = galUser.getBirthDate();
         this.rate = galUser.getRate();
         this.description = galUser.getDescription();
+        this.car = galUser.getCar();
     }
 
     public GalUserResponse() {
@@ -101,6 +103,14 @@ public class GalUserResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCar() {
+        return car;
+    }
+
+    public void setCar(String car) {
+        this.car = car;
     }
 }
 

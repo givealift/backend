@@ -18,6 +18,7 @@ public class SignUpUserRequest {
     private String address;
     private Double rate;
     private String description;
+    private String car;
 
     public GalUser mapToGalUserWithoutPassword(GalUser user) {
         user.setFirstName(firstName);
@@ -29,6 +30,7 @@ public class SignUpUserRequest {
         user.setBirthDate(birthYear);
         user.setRate(rate);
         user.setDescription(description);
+        user.setCar(car);
 
         return user;
     }
@@ -112,5 +114,14 @@ public class SignUpUserRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public String getCar() {
+        return car;
+    }
+
+    public void setCar(String car) {
+        this.car = car;
     }
 }

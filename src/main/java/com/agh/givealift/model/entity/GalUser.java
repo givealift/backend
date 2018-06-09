@@ -1,10 +1,8 @@
 package com.agh.givealift.model.entity;
 
 
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
 import java.util.Date;
 
 @Entity
@@ -35,12 +33,13 @@ public class GalUser {
     @Basic(fetch = FetchType.LAZY)
     private byte[] photo;
     private String description;
+    private String car;
 
 
     public GalUser() {
     }
 
-    public GalUser(String password, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String address,String description) {
+    public GalUser(String password, String firstName, String lastName, String email, String phone, String gender, Date birthDate, String address, String description, String car) {
 
         this.password = password;
         this.firstName = firstName;
@@ -51,6 +50,7 @@ public class GalUser {
         this.birthDate = birthDate;
         this.address = address;
         this.description = description;
+        this.car = car;
     }
 
     public Long getGalUserId() {
@@ -185,5 +185,13 @@ public class GalUser {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCar() {
+        return car;
+    }
+
+    public void setCar(String car) {
+        this.car = car;
     }
 }
