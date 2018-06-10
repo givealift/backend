@@ -28,7 +28,7 @@ public class UserServiceInit {
         put("user2@gmail.pl", "logo.png");
         put("mw@gmail.pl", "user.png");
         put("bg@gmail.pl", "user.png");
-        put("ks@gmail.pl", "user2.png");
+        put("ks@gmail.pl", "Kot.jpg");
         put("ds@gmail.pl", "user3.png");
         put("pz@gmail.pl", "user3.png");
         put("jo@gmail.pl", "user2.png");
