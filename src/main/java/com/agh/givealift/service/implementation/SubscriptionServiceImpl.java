@@ -59,9 +59,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Optional<City> fromCity = cityService.get(subscriptionRequest.getFromCityId());
         Optional<City> toCity = cityService.get(subscriptionRequest.getToCityId());
 
-        cod.i(authentication);
-        GalUser user = ((UserDetails) authentication.getPrincipal()).getUser();
-
 
         if (fromCity.isPresent() && toCity.isPresent()) {
             Subscription subscription = new Subscription();
@@ -71,7 +68,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscription.setNotificationType(subscriptionRequest.getNotificationType());
             subscription.setFrom(fromCity.get());
             subscription.setTo(toCity.get());
-            subscription.setUserId(user.getGalUserId());
+            if (authentication != null) {
+                cod.i(authentication);
+                GalUser user = ((UserDetails) authentication.getPrincipal()).getUser();
+                subscription.setUserId(user.getGalUserId());
+            }
             subscription = subscriptionRepository.save(subscription);
             cod.c().addShowToString(NotificationType.class, DeviceType.class).i("ADDED SUBSCRIPTION: ", subscription);
             return Optional.of(subscription);
