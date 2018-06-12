@@ -129,7 +129,11 @@ public class UserController {
 
     @SuppressWarnings("deprecation")
     @GetMapping(value = "/user/change/password")
-    public ResponseEntity<String> changePassword(@RequestParam("old-password") String oldPass, @RequestParam("new-password") String newPass, Authentication authentication) throws AuthenticationException {
+    public ResponseEntity<String> changePassword(
+            @RequestParam("old-password") String oldPass,
+            @RequestParam("new-password") String newPass,
+            Authentication authentication
+    ) throws AuthenticationException {
         GalUser user = ((UserDetails) authentication.getPrincipal()).getUser();
         userService.changeUserPassword(user, oldPass, newPass);
         return new ResponseEntity<>("Hasło zmienione", HttpStatus.OK);

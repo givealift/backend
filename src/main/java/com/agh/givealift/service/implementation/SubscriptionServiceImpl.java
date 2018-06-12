@@ -59,7 +59,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Optional<City> fromCity = cityService.get(subscriptionRequest.getFromCityId());
         Optional<City> toCity = cityService.get(subscriptionRequest.getToCityId());
 
-        cod.i(authentication.getPrincipal());
+        cod.i(authentication);
         GalUser user = ((UserDetails) authentication.getPrincipal()).getUser();
 
 
