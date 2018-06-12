@@ -2,16 +2,14 @@ package com.agh.givealift.model.entity;
 
 import com.agh.givealift.model.enums.DeviceType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class PushNotification {
     private Long pushNotificationId;
     private String pushToken;
     private Long userId;
+    @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
 
     @Id

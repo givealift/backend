@@ -84,7 +84,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         try {
             List<SubscriptionResponse> all = check(route);
 
-            cod.c().addShowToString(NotificationType.class, DeviceType.class).i(all);
+            cod.c().addShowToString(NotificationType.class, DeviceType.class, NotificationType.class)
+                    .i("ALL SubscriptionResponse ", all);
             notificationService.notifyBot(all.stream()
                     .filter(s -> s.getNotificationType().equals(NotificationType.BOT))
                     .collect(Collectors.toList())
