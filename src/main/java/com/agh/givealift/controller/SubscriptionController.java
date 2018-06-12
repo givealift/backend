@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -28,9 +29,13 @@ public class SubscriptionController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Long> add(@RequestBody SubscriptionRequest subscriptionRequest, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Long> add(
+            @RequestBody SubscriptionRequest subscriptionRequest,
+            UriComponentsBuilder ucBuilder,
+            Authentication authentication
+    ) {
 
-        return subscriptionService.add(subscriptionRequest)
+        return subscriptionService.add(subscriptionRequest, authentication)
                 .map(
                         s -> {
                             HttpHeaders headers = new HttpHeaders();
@@ -40,25 +45,24 @@ public class SubscriptionController {
                 )
                 .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
-    
+
     @GetMapping("/all")
-    public ResponseEntity<List<SubscriptionResponse>> getAllSubscription(){
-        List<SubscriptionResponse> response =  subscriptionService.getAll()
+    public ResponseEntity<List<SubscriptionResponse>> getAllSubscription() {
+        List<SubscriptionResponse> response = subscriptionService.getAll()
                 .stream().map(subscriptionService::mapToSubscriptionResponse).collect(Collectors.toList());
-          return new ResponseEntity<>(response,HttpStatus.OK);               
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
-    
-
-     @DeleteMapping("/{id}")
-     public ResponseEntity<?> getAllSubscription(@PathVariable("id") long id) {
-         Optional<Long> subscription = Optional.ofNullable(subscriptionService.delete(id));
-         return subscription
-                 .<ResponseEntity<?>>map(aLong -> new ResponseEntity<>(aLong, HttpStatus.OK))
-                 .orElseGet(() -> new ResponseEntity<>("User does not exists.", HttpStatus.BAD_REQUEST));
 
 
-     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> getAllSubscription(@PathVariable("id") long id) {
+        Optional<Long> subscription = Optional.ofNullable(subscriptionService.delete(id));
+        return subscription
+                .<ResponseEntity<?>>map(aLong -> new ResponseEntity<>(aLong, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>("User does not exists.", HttpStatus.BAD_REQUEST));
+
+
+    }
 
 
 }

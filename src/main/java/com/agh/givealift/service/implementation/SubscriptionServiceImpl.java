@@ -19,7 +19,6 @@ import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import com.stefanik.cod.controller.CODGlobal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -54,14 +53,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         CODGlobal.setImmersionLevel(4);
     }
 
+
     @Override
-    public Optional<Subscription> add(SubscriptionRequest subscriptionRequest) {
+    public Optional<Subscription> add(SubscriptionRequest subscriptionRequest, Authentication authentication) {
         Optional<City> fromCity = cityService.get(subscriptionRequest.getFromCityId());
         Optional<City> toCity = cityService.get(subscriptionRequest.getToCityId());
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        cod.i(authentication.getPrincipal());
         GalUser user = ((UserDetails) authentication.getPrincipal()).getUser();
-
 
 
         if (fromCity.isPresent() && toCity.isPresent()) {
