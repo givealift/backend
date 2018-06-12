@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface RouteRepository extends JpaRepository<Route, String> {
+public interface RouteRepository extends JpaRepository<Route, Long> {
 
     @Query(
             "select distinct r from Route r "

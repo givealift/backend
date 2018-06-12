@@ -61,7 +61,9 @@ public class Init {
         signUp.setFirstName("Jan");
         signUp.setLastName("Kowalski");
         signUp.setGender("male");
-        signUp.setBirthYear(new GregorianCalendar(1997, 9, 15, 1, 10, 16).getTime());
+        signUp.setCar("Toyota Yaris");
+        signUp.setDescription("Zapraszam do jazdy");
+        signUp.setBirthDate(new GregorianCalendar(1997, 9, 15, 1, 10, 16).getTime());
         signUp.setRate(0D);
         signUp.setPhone("365198320");
         return userServiceInit.signUp(signUp);
@@ -74,7 +76,9 @@ public class Init {
         signUp.setFirstName("Anna");
         signUp.setLastName("Mickiewicz");
         signUp.setGender("female");
-        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setCar("Fiat punto");
+        signUp.setDescription("Zapraszam do jazdy");
+        signUp.setBirthDate(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(0D);
         signUp.setPhone("687998564");
         return userServiceInit.signUp(signUp);
@@ -87,7 +91,9 @@ public class Init {
         signUp.setFirstName("Marcin");
         signUp.setLastName("Wloczko");
         signUp.setGender("male");
-        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setCar("Fiat Punto");
+        signUp.setDescription("HEJKA kocham podróze te małe i duże :)");
+        signUp.setBirthDate(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(5D);
         signUp.setPhone("123456789");
         return userServiceInit.signUp(signUp);
@@ -100,7 +106,9 @@ public class Init {
         signUp.setFirstName("Bartek");
         signUp.setLastName("Grodek");
         signUp.setGender("male");
-        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setCar("Seat Cordoba");
+        signUp.setDescription("HEJKA kocham podróze te małe i duże :)");
+        signUp.setBirthDate(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(5D);
         signUp.setPhone("234567890");
         return userServiceInit.signUp(signUp);
@@ -113,7 +121,9 @@ public class Init {
         signUp.setFirstName("Krzysztof");
         signUp.setLastName("Szczyrbak");
         signUp.setGender("male");
-        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setCar("Porshe 3434xD");
+        signUp.setDescription("Zapraszam do kontaktu");
+        signUp.setBirthDate(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(4D);
         signUp.setPhone("345678901");
         return userServiceInit.signUp(signUp);
@@ -126,7 +136,9 @@ public class Init {
         signUp.setFirstName("Daniel");
         signUp.setLastName("Stefanik");
         signUp.setGender("male");
-        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setCar("Seat Cordoba");
+        signUp.setDescription("Zapraszam do jazdy ze mną");
+        signUp.setBirthDate(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(4D);
         signUp.setPhone("456789012");
         return userServiceInit.signUp(signUp);
@@ -139,7 +151,9 @@ public class Init {
         signUp.setFirstName("Patryk");
         signUp.setLastName("Zygmunt");
         signUp.setGender("male");
-        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setCar("Porshe 3434xD");
+        signUp.setDescription("Zapraszam do jazdy ze mną");
+        signUp.setBirthDate(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(4D);
         signUp.setPhone("567890123");
         return userServiceInit.signUp(signUp);
@@ -151,8 +165,10 @@ public class Init {
         signUp.setPassword("admin");
         signUp.setFirstName("Jacek");
         signUp.setLastName("Oles");
+        signUp.setCar("Porshe 3434xD");
+        signUp.setDescription("Zapraszam do jazdy ze mną");
         signUp.setGender("male");
-        signUp.setBirthYear(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
+        signUp.setBirthDate(new GregorianCalendar(1996, 1, 28, 13, 24, 56).getTime());
         signUp.setRate(5D);
         signUp.setPhone("678901234");
         return userServiceInit.signUp(signUp);

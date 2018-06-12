@@ -4,7 +4,6 @@ import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.entity.Localization;
 import com.agh.givealift.model.entity.Route;
 import com.agh.givealift.model.request.NewPassengerRequest;
-import com.agh.givealift.model.response.PushNotificationResponse;
 import com.agh.givealift.model.response.RouteResponse;
 import com.agh.givealift.service.RouteService;
 import com.stefanik.cod.controller.COD;
@@ -124,6 +123,13 @@ public class RouteController {
             @PathVariable("userId") long userId
     ) {
         return new ResponseEntity<>(routeService.getUserRides(userId), HttpStatus.OK);
+    }
+
+
+    @DeleteMapping(value = "/ride/{id}")
+    public ResponseEntity<String> deleteToute(@PathVariable("id") long id) {
+        routeService.deleteRoute(id);
+        return new ResponseEntity<>("DELETED", HttpStatus.OK);
     }
 
     @Deprecated

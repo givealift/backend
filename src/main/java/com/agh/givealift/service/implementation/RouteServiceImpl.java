@@ -268,5 +268,9 @@ public class RouteServiceImpl implements RouteService {
                 .collect(Collectors.toList());
     }
 
+    public void deleteRoute(long id) {
+        routeRepository.deleteById(id);
+    }
+
 
 }
