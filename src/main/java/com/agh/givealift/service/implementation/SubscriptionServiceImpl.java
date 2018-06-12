@@ -2,10 +2,7 @@ package com.agh.givealift.service.implementation;
 
 import com.agh.givealift.configuration.Configuration;
 import com.agh.givealift.model.Tuple;
-import com.agh.givealift.model.entity.City;
-import com.agh.givealift.model.entity.Localization;
-import com.agh.givealift.model.entity.Route;
-import com.agh.givealift.model.entity.Subscription;
+import com.agh.givealift.model.entity.*;
 import com.agh.givealift.model.enums.DeviceType;
 import com.agh.givealift.model.enums.NotificationType;
 import com.agh.givealift.model.request.SubscriptionRequest;
@@ -13,6 +10,7 @@ import com.agh.givealift.model.response.PushNotificationResponse;
 import com.agh.givealift.model.response.PushNotificationResponses;
 import com.agh.givealift.model.response.SubscriptionResponse;
 import com.agh.givealift.repository.SubscriptionRepository;
+import com.agh.givealift.security.UserDetails;
 import com.agh.givealift.service.CityService;
 import com.agh.givealift.service.NotificationService;
 import com.agh.givealift.service.PushNotificationService;
@@ -21,6 +19,9 @@ import com.stefanik.cod.controller.COD;
 import com.stefanik.cod.controller.CODFactory;
 import com.stefanik.cod.controller.CODGlobal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -58,6 +59,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Optional<City> fromCity = cityService.get(subscriptionRequest.getFromCityId());
         Optional<City> toCity = cityService.get(subscriptionRequest.getToCityId());
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        GalUser user = ((UserDetails) authentication.getPrincipal()).getUser();
+
+
+
         if (fromCity.isPresent() && toCity.isPresent()) {
             Subscription subscription = new Subscription();
             subscription.setSubscriber(subscriptionRequest.getSubscriber());
@@ -66,7 +72,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscription.setNotificationType(subscriptionRequest.getNotificationType());
             subscription.setFrom(fromCity.get());
             subscription.setTo(toCity.get());
-
+            subscription.setUserId(user.getGalUserId());
             subscription = subscriptionRepository.save(subscription);
             cod.c().addShowToString(NotificationType.class, DeviceType.class).i("ADDED SUBSCRIPTION: ", subscription);
             return Optional.of(subscription);
@@ -97,10 +103,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             );
             notificationService.notifyWeb2(result);
 
-            notificationService.notifyWeb(pushNotificationResponses.stream()
-                    .filter(pnr -> pnr.getDeviceType().equals(DeviceType.WEB))
-                    .collect(Collectors.toList())
-            );
+//            notificationService.notifyWeb(pushNotificationResponses.stream()
+//                    .filter(pnr -> pnr.getDeviceType().equals(DeviceType.WEB))
+//                    .collect(Collectors.toList())
+//            );
 
             notificationService.notifyMobile(pushNotificationResponses.stream()
                     .filter(pnr -> pnr.getDeviceType().equals(DeviceType.MOBILE))
@@ -187,6 +193,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         response.setFrom(subscription.getFrom());
         response.setNotificationType(subscription.getNotificationType());
         response.setTo(subscription.getTo());
+        response.setUserId(subscription.getUserId());
         return response;
 
 

@@ -13,6 +13,8 @@ public class Subscription {
     private City from;
     private City to;
     private Date date;
+    private Long userId;
+
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
@@ -77,5 +79,13 @@ public class Subscription {
 
     public void setNotificationType(NotificationType notificationType) {
         this.notificationType = notificationType;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

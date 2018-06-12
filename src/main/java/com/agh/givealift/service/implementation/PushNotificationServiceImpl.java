@@ -91,6 +91,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         psr.setToCityName(sr.getTo().getName());
         psr.setDate(sr.getDate());
         psr.setRouteId(sr.getRouteId());
+        psr.setUserId(sr.getUserId());
         return psr;
     }
 

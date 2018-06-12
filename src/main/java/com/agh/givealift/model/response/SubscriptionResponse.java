@@ -13,6 +13,7 @@ public class SubscriptionResponse {
     private City to;
     private Date date;
     private Long routeId;
+    private Long userId;
     private NotificationType notificationType;
 
     public SubscriptionResponse() {
@@ -80,5 +81,13 @@ public class SubscriptionResponse {
 
     public void setNotificationType(NotificationType notificationType) {
         this.notificationType = notificationType;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -13,6 +13,7 @@ public class PushSubscriptionResponse {
     private String toCityName;
     private Date date;
     private Long routeId;
+    private Long userId;
 
     public Long getFromCityId() {
         return fromCityId;
@@ -60,5 +61,13 @@ public class PushSubscriptionResponse {
 
     public void setRouteId(Long routeId) {
         this.routeId = routeId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
