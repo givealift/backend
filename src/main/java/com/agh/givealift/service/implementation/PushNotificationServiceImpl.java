@@ -71,10 +71,11 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public PushNotificationResponses findNotification2(List<SubscriptionResponse> subscriptionResponses) {
         if (subscriptionResponses.size() > 0) {
             ArrayList<String> l = new ArrayList<>();
+            cod.i(pushNotificationRepository.find(Long.parseLong(subscriptionResponses.get(0).getSubscriber())));
             for (PushNotification pn : pushNotificationRepository.find(Long.parseLong(subscriptionResponses.get(0).getSubscriber()))) {
-                if (pn.getDeviceType().equals(DeviceType.WEB)){
+              //  if (pn.getDeviceType().equals(DeviceType.WEB)){
                     l.add(pn.getPushToken());
-                }
+               // }
             }
             PushNotificationResponses pnr = new PushNotificationResponses();
             pnr.setData(getPushSubscriptionResponse(subscriptionResponses.get(0)));
